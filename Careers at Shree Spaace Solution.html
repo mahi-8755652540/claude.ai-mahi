@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Shree Spaace Solution • Job Application</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;font-family:"Inter",system-ui,sans-serif;}
+    body{background:#f3f4f6;padding:24px;display:flex;justify-content:center;}
+    .wrapper{max-width:900px;width:100%;background:#fff;padding:28px;border-radius:16px;
+      box-shadow:0 20px 40px rgba(15,23,42,0.14);border-top:6px solid #c9a456;}
+
+    .header{display:flex;align-items:center;gap:18px;margin-bottom:22px;}
+    .logo{width:70px;height:70px;border-radius:14px;background:#fff;border:2px solid #c9a456;
+      display:flex;align-items:center;justify-content:center;font-weight:800;font-size:24px;
+      color:#0d4f55;box-shadow:0 4px 12px rgba(0,0,0,0.12);} /* Logo styling, not text */
+    .header-text h1{font-size:22px;font-weight:700;color:#0f172a;}
+    .header-text p{font-size:13px;color:#64748b;}
+
+    h2.section-title{
+      margin:22px 0 10px;
+      font-size:18px;
+      font-weight:700;
+      color:#0f172a;
+      border-left:4px solid #0d9488;
+      padding-left:8px;
+    }
+    .section-sub{
+      font-size:13px; /* Increased from 12px */
+      color:#9ca3af;
+      margin-bottom:12px;
+    }
+
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+    .field{margin-bottom:16px;}
+    label{font-size:14px;font-weight:600;margin-bottom:5px;display:block;} /* Increased from 13px */
+    .req{color:#dc2626;}
+
+    input,select,textarea{
+      width:100%;padding:10px;border:1.4px solid #d1d5db;border-radius:8px;
+      background:#f9fafb;font-size:14px;outline:none;
+    }
+    input:focus,select:focus,textarea:focus{
+      border-color:#0d9488;background:#fff;box-shadow:0 0 0 3px rgba(13,148,136,0.18);
+    }
+    textarea{min-height:80px;resize:vertical;}
+    input,select,textarea{ /* Increased from 14px */
+    .btn-submit{
+      margin-top:20px;
+      width:100%;
+      padding:12px 20px;
+      border-radius:999px;
+      border:none;
+      font-weight:700;
+      font-size:16px; /* Increased from 15px */
+      cursor:pointer;
+      background:linear-gradient(90deg,#c9a456,#eacd7b);
+      color:#111;
+    }
+
+    @media(max-width:720px){
+      .grid-2{grid-template-columns:1fr;}
+      .wrapper{padding:20px;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrapper">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo">SSS</div>
+    <div class="header-text">
+      <h1>Job Application • Shree Spaace Solution</h1>
+      <p>Office Interior & Construction • Strict validation enabled</p>
+    </div>
+  </div>
+
+  <form id="jobForm" novalidate>
+    <!-- BASIC DETAILS -->
+    <h2 class="section-title">1. Basic Details</h2>
+    <p class="section-sub">Enter your correct personal details. These will be used for all HR records.</p>
+
+    <div class="grid-2">
+      <div class="field">
+        <label>Full Name <span class="req">*</span></label>
+        <input type="text" id="fullName" required placeholder="e.g. Mukesh Gulati">
+      </div>
+      <div class="field">
+        <label>Mobile Number <span class="req">*</span></label>
+        <input type="text" id="mobile" required placeholder="10 digit or +91 format">
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label>Email <span class="req">*</span></label>
+        <input type="email" id="email" required placeholder="name@example.com">
+      </div>
+      <div class="field">
+        <label>Date of Birth <span class="req">*</span></label>
+        <input type="date" id="dob" required>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label>Current City <span class="req">*</span></label>
+        <input type="text" id="city" required placeholder="Gurugram / Delhi etc.">
+      </div>
+      <div class="field">
+        <label>Permanent Address <span class="req">*</span></label>
+        <input type="text" id="address" required placeholder="House No, Street, City, State">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Passport Photo (JPG / PNG) <span class="req">*</span></label>
+      <input type="file" id="photo" required accept=".jpg,.jpeg,.png">
+    </div>
+
+    <!-- ROLE & EXPERIENCE -->
+    <h2 class="section-title">2. Role & Experience</h2>
+    <p class="section-sub">Tell us what role you’re applying for and your work background.</p>
+
+    <div class="field">
+      <label>Post Applied For <span class="req">*</span></label>
+      <select id="post" required>
+        <option value="">Select Post</option>
+        <option>Project Manager</option>
+        <option>Site Engineer</option>
+        <option>Junior Engineer</option>
+        <option>Site Supervisor</option>
+        <option>Architect</option>
+        <option>Interior Designer</option>
+        <option>Draughtsman</option>
+        <option>3D Visualizer</option>
+        <option>Safety Officer</option>
+        <option>Billing Engineer</option>
+        <option>Accounts Executive</option>
+        <option>Admin Executive</option>
+        <option>Carpenter</option>
+        <option>Electrician</option>
+      </select>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label>Total Experience <span class="req">*</span></label>
+        <select id="exp" required>
+          <option value="">Select</option>
+          <option>Fresher</option>
+          <option>1–2 Years</option>
+          <option>2–5 Years</option>
+          <option>5–10 Years</option>
+          <option>10+ Years</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Joining Availability <span class="req">*</span></label>
+        <select id="join" required>
+          <option value="">Select</option>
+          <option>Immediate</option>
+          <option>7 Days</option>
+          <option>15 Days</option>
+          <option>30 Days</option>
+          <option>More than 30 Days</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label>Current CTC (Monthly) <span class="req">*</span></label>
+        <input type="text" id="ctcCurrent" required placeholder="e.g. 35000">
+      </div>
+      <div class="field">
+        <label>Expected CTC (Monthly) <span class="req">*</span></label>
+        <input type="text" id="ctcExpected" required placeholder="e.g. 45000">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Key Skills (min 10 characters) <span class="req">*</span></label>
+      <textarea id="skills" required placeholder="Site supervision, BOQ, AutoCAD, vendor coordination, etc."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Major Projects / Sites Handled (min 10 characters) <span class="req">*</span></label>
+      <textarea id="projects" required placeholder="Write main 2–3 projects with role & city."></textarea>
+    </div>
+
+    <!-- DOCUMENTS -->
+    <h2 class="section-title">3. Documents Upload</h2>
+    <p class="section-sub">Upload clear and correct documents. Blurry / wrong files will lead to rejection.</p>
+
+    <div class="field">
+      <label>Resume (PDF only) <span class="req">*</span></label>
+      <input type="file" id="resume" required accept=".pdf">
+    </div>
+
+    <div class="field">
+      <label>Signature (JPG / PNG) <span class="req">*</span></label>
+      <input type="file" id="sign" required accept=".jpg,.jpeg,.png">
+    </div>
+
+    <div class="field">
+      <label>Aadhaar (Image / PDF) <span class="req">*</span></label>
+      <input type="file" id="aadhaar" required accept=".jpg,.jpeg,.png,.pdf">
+    </div>
+
+    <div class="field">
+      <label>PAN (Image / PDF) <span class="req">*</span></label>
+      <input type="file" id="pan" required accept=".jpg,.jpeg,.png,.pdf">
+    </div>
+
+    <button type="submit" class="btn-submit">Submit Application</button>
+  </form>
+</div>
+
+<script>
+  const form = document.getElementById("jobForm");
+
+  // Helpers
+  function validateName() {
+    const name = document.getElementById("fullName");
+    const val = name.value.trim();
+    if (!/^[A-Za-z ]{3,}$/.test(val)) {
+      name.setCustomValidity("Name should contain only letters & spaces (min 3 characters).");
+      name.reportValidity();
+      return false;
+    }
+    name.setCustomValidity("");
+    return true;
+  }
+
+  function validateMobile() {
+    const mobile = document.getElementById("mobile");
+    const v = mobile.value.trim();
+    const re = /^(\+91[- ]?)?[6-9]\d{9}$/;
+    if (!re.test(v)) {
+      mobile.setCustomValidity("Enter valid Indian mobile (10 digit, starts 6-9, with or without +91).");
+      mobile.reportValidity();
+      return false;
+    }
+    mobile.setCustomValidity("");
+    return true;
+  }
+
+  function validateEmail() {
+    const email = document.getElementById("email");
+    const v = email.value.trim();
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!re.test(v)) {
+      email.setCustomValidity("Enter a valid email address.");
+      email.reportValidity();
+      return false;
+    }
+    email.setCustomValidity("");
+    return true;
+  }
+
+  function validateCity() {
+    const city = document.getElementById("city");
+    const v = city.value.trim();
+    if (!/^[A-Za-z ]{2,}$/.test(v)) {
+      city.setCustomValidity("City must contain only letters and spaces.");
+      city.reportValidity();
+      return false;
+    }
+    city.setCustomValidity("");
+    return true;
+  }
+
+  function validateAddress() {
+    const addr = document.getElementById("address");
+    const v = addr.value.trim();
+    if (v.length < 10 || !/[A-Za-z]/.test(v) || /^\d+$/.test(v)) {
+      addr.setCustomValidity("Enter a proper address (min 10 chars, not only numbers).");
+      addr.reportValidity();
+      return false;
+    }
+    addr.setCustomValidity("");
+    return true;
+  }
+
+  function validateCTC(id) {
+    const el = document.getElementById(id);
+    const v = el.value.trim();
+    if (!/^\d+$/.test(v) || parseInt(v,10) <= 0) {
+      el.setCustomValidity("Enter a valid numeric amount (only digits, greater than 0).");
+      el.reportValidity();
+      return false;
+    }
+    el.setCustomValidity("");
+    return true;
+  }
+
+  function validateMinLength(id, min, msg) {
+    const el = document.getElementById(id);
+    const v = el.value.trim();
+    if (v.length < min) {
+      el.setCustomValidity(msg);
+      el.reportValidity();
+      return false;
+    }
+    el.setCustomValidity("");
+    return true;
+  }
+
+  function validateFileExt(inputId, allowedExts, msg) {
+    const el = document.getElementById(inputId);
+    if (!el.files || !el.files[0]) {
+      el.setCustomValidity("Please upload file.");
+      el.reportValidity();
+      return false;
+    }
+    const name = el.files[0].name.toLowerCase();
+    const ok = allowedExts.some(ext => name.endsWith(ext));
+    if (!ok) {
+      el.setCustomValidity(msg);
+      el.reportValidity();
+      return false;
+    }
+    el.setCustomValidity("");
+    return true;
+  }
+
+  function validateAll() {
+    // Required check
+    const requiredFields = form.querySelectorAll("input[required],select[required],textarea[required]");
+    for (let f of requiredFields) {
+      if (f.type !== "file" && !f.value.trim()) {
+        f.setCustomValidity("This field is required.");
+        f.reportValidity();
+        return false;
+      } else if (f.type !== "file") {
+        f.setCustomValidity("");
+      }
+    }
+
+    // Advanced checks
+    if (!validateName()) return false;
+    if (!validateMobile()) return false;
+    if (!validateEmail()) return false;
+    if (!validateCity()) return false;
+    if (!validateAddress()) return false;
+
+    if (!validateCTC("ctcCurrent")) return false;
+    if (!validateCTC("ctcExpected")) return false;
+    if (!validateMinLength("skills", 10, "Skills must be at least 10 characters.")) return false;
+    if (!validateMinLength("projects", 10, "Projects details must be at least 10 characters.")) return false;
+
+    if (!validateFileExt("photo", [".jpg",".jpeg",".png"], "Photo must be JPG or PNG.")) return false;
+    if (!validateFileExt("resume", [".pdf"], "Resume must be PDF only.")) return false;
+    if (!validateFileExt("sign", [".jpg",".jpeg",".png"], "Signature must be JPG or PNG.")) return false;
+    if (!validateFileExt("aadhaar", [".jpg",".jpeg",".png",".pdf"], "Aadhaar must be image or PDF.")) return false;
+    if (!validateFileExt("pan", [".jpg",".jpeg",".png",".pdf"], "PAN must be image or PDF.")) return false;
+
+    return true;
+  }
+
+  form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  if (!validateAll()) return;
+
+  const googleScriptURL = "const googleScriptURL = "https://script.google.com/macros/s/AKfycbyGzGo6Bj54X1KvcQXby2u0T4b2Atizm9OD_5__yVBtEP5eqmH6UzJ3aSYX5Gpw4NsW/exec";
+
+
+  const formData = {
+    fullName: document.getElementById("fullName").value,
+    mobile: document.getElementById("mobile").value,
+    email: document.getElementById("email").value,
+    dob: document.getElementById("dob").value,
+    city: document.getElementById("city").value,
+    address: document.getElementById("address").value,
+    post: document.getElementById("post").value,
+    exp: document.getElementById("exp").value,
+    join: document.getElementById("join").value,
+    ctcCurrent: document.getElementById("ctcCurrent").value,
+    ctcExpected: document.getElementById("ctcExpected").value,
+    skills: document.getElementById("skills").value,
+    projects: document.getElementById("projects").value,
+    
+    // uploads optional: agar chaho to Base64 ya URLs bhi bhej sakta hoon
+    resume: document.getElementById("resume").value,
+    photo: document.getElementById("photo").value,
+    aadhaar: document.getElementById("aadhaar").value,
+    pan: document.getElementById("pan").value,
+    sign: document.getElementById("sign").value,
+  };
+
+  const res = await fetch(googleScriptURL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(formData)
+  });
+
+  alert("Application submitted successfully! Data saved to Google Sheet.");
+  form.reset();
+  window.scrollTo(0, 0);
+});
+
+
+  // Live blur validation
+  document.getElementById("fullName").addEventListener("blur", validateName);
+  document.getElementById("mobile").addEventListener("blur", validateMobile);
+  document.getElementById("email").addEventListener("blur", validateEmail);
+  document.getElementById("city").addEventListener("blur", validateCity);
+  document.getElementById("address").addEventListener("blur", validateAddress);
+  document.getElementById("ctcCurrent").addEventListener("blur", () => validateCTC("ctcCurrent"));
+  document.getElementById("ctcExpected").addEventListener("blur", () => validateCTC("ctcExpected"));
+</script>
+
+</body>
+</html>

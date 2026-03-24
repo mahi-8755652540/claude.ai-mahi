@@ -1,0 +1,22 @@
+[
+  {
+    "icon": "https://img.icons8.com/ios-filled/70/a3471a/ruler.png",
+    "title": "Design & Build",
+    "desc": "Complete design and build solutions for offices, educational institutes, retail, and hospitality spaces."
+  },
+  {
+    "icon": "https://img.icons8.com/ios-filled/70/a3471a/fork.png",
+    "title": "Restaurants",
+    "desc": "Turnkey interiors and fitouts for restaurants, cafes, and food courts."
+  },
+  {
+    "icon": "https://img.icons8.com/ios-filled/70/a3471a/hotel-bed.png",
+    "title": "Hospitality",
+    "desc": "Modern, functional, and aesthetic interiors for hotels and hospitality spaces."
+  },
+  {
+    "icon": "https://img.icons8.com/ios-filled/70/a3471a/shop.png",
+    "title": "Retail Corporates",
+    "desc": "Retail and corporate fitouts for showrooms, offices, and commercial spaces."
+  }
+]

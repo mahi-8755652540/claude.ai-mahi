@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vendor Registration Form • Shree Spaace Solution Pvt. Ltd.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}
+    body{background:#f3f4f6;padding:30px 12px;display:flex;justify-content:center;}
+    .wrapper{max-width:900px;width:100%;background:#fff;border-radius:12px;padding:28px 24px 36px;box-shadow:0 10px 30px rgba(0,0,0,0.08);}
+    .header{text-align:center;margin-bottom:24px;border-bottom:1px solid #e5e7eb;padding-bottom:12px;}
+    .company-name{font-size:1.4rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:#0f172a;}
+    .tagline{font-size:0.9rem;color:#6b7280;margin-top:4px;}
+    .form-title{margin-top:10px;font-size:1.2rem;font-weight:600;color:#111827;}
+    .section{margin-top:22px;padding:18px 16px;border:1px solid #e5e7eb;border-radius:10px;background:#f9fafb;}
+    .section-title{font-size:1rem;font-weight:600;margin-bottom:12px;color:#111827;}
+    .row{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:10px;}
+    .field{flex:1 1 250px;display:flex;flex-direction:column;gap:4px;}
+    label{font-size:0.85rem;font-weight:500;color:#374151;}
+    input,textarea{padding:8px 10px;border:1px solid #d1d5db;border-radius:6px;font-size:0.9rem;outline:none;background:#fff;}
+    textarea{min-height:70px;resize:vertical;}
+    input[type="file"]{padding:4px;}
+    .checkbox-group{display:flex;flex-wrap:wrap;gap:10px 25px;font-size:0.9rem;}
+    .checkbox-item{display:flex;align-items:center;gap:6px;}
+    .btn-row{text-align:right;margin-top:22px;}
+    button{border:none;padding:10px 18px;border-radius:999px;font-size:0.95rem;font-weight:600;cursor:pointer;background:#0f766e;color:#fff;box-shadow:0 6px 18px rgba(15,118,110,0.25);}
+    button:hover{background:#0d9488;}
+    .note{font-size:0.8rem;color:#6b7280;margin-top:4px;}
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <header class="header">
+      <div class="company-name">Shree Spaace Solution Pvt. Ltd.</div>
+      <div class="tagline">Interior Turnkey Solution & Construction Company</div>
+      <div class="form-title">Vendor Registration Form</div>
+    </header>
+
+    <!-- IMPORTANT: yahan apna WEB APP URL daalo -->
+    <form
+      method="POST"
+      action="https://script.google.com/macros/s/AKfycbzmZuYWa4f4uX1YmnnvMCDVkt3L8O6dW03AIdgTXY-Mf3AZIh3AD-V6Se9xNnIBeeDwdA/exec"
+      enctype="multipart/form-data">
+
+      <!-- COMPANY INFO -->
+      <section class="section">
+        <div class="section-title">1. Company Information</div>
+        <div class="row">
+          <div class="field">
+            <label>Legal Company Name</label>
+            <input type="text" name="companyName" required />
+          </div>
+          <div class="field">
+            <label>Trade Name (if different)</label>
+            <input type="text" name="tradeName" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label>Registered Address</label>
+            <textarea name="address" required></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT -->
+      <section class="section">
+        <div class="section-title">2. Contact Person Details</div>
+        <div class="row">
+          <div class="field"><label>Contact Person</label><input type="text" name="contactPerson" required /></div>
+          <div class="field"><label>Designation</label><input type="text" name="designation" /></div>
+        </div>
+        <div class="row">
+          <div class="field"><label>Mobile Number</label><input type="tel" name="mobile" required /></div>
+          <div class="field"><label>Alternate Mobile</label><input type="tel" name="altMobile" /></div>
+          <div class="field"><label>Email</label><input type="email" name="email" required /></div>
+        </div>
+      </section>
+
+      <!-- COMPLIANCE -->
+      <section class="section">
+        <div class="section-title">3. Compliance & Registration</div>
+        <div class="row">
+          <div class="field"><label>GST Number</label><input type="text" name="gst" /></div>
+          <div class="field"><label>PAN Number</label><input type="text" name="pan" /></div>
+        </div>
+      </section>
+
+      <!-- BANK DETAILS -->
+      <section class="section">
+        <div class="section-title">4. Banking Details</div>
+        <div class="row">
+          <div class="field"><label>Account Holder Name</label><input type="text" name="accHolder" /></div>
+          <div class="field"><label>Bank Name</label><input type="text" name="bankName" /></div>
+        </div>
+        <div class="row">
+          <div class="field"><label>Branch</label><input type="text" name="branch" /></div>
+          <div class="field"><label>Account Number</label><input type="text" name="accNumber" /></div>
+          <div class="field"><label>IFSC Code</label><input type="text" name="ifsc" /></div>
+        </div>
+      </section>
+
+      <!-- WORK EXPERIENCE -->
+      <section class="section">
+        <div class="section-title">5. Work Experience</div>
+        <div class="row">
+          <div class="field"><label>Major Clients</label><textarea name="clients"></textarea></div>
+        </div>
+        <div class="row">
+          <div class="field"><label>Recent Projects</label><textarea name="projects"></textarea></div>
+        </div>
+      </section>
+
+      <!-- DOCUMENT UPLOADS -->
+      <section class="section">
+        <div class="section-title">6. Upload Documents</div>
+        <div class="row">
+          <div class="field">
+            <label>Upload Aadhaar Card</label>
+            <input type="file" name="aadhaarFile" accept="image/*,application/pdf" />
+          </div>
+          <div class="field">
+            <label>Upload PAN Card</label>
+            <input type="file" name="panFile" accept="image/*,application/pdf" />
+          </div>
+          <div class="field">
+            <label>Upload Cancelled Cheque</label>
+            <input type="file" name="chequeFile" accept="image/*,application/pdf" />
+          </div>
+        </div>
+        <p class="note">Upload clear scanned copies for faster verification.</p>
+      </section>
+
+      <!-- DECLARATION -->
+      <section class="section">
+        <div class="section-title">7. Declaration</div>
+        <div class="row">
+          <div class="field"><label>Authorized Signatory Name</label><input type="text" name="signName" /></div>
+          <div class="field"><label>Designation</label><input type="text" name="signDesig" /></div>
+          <div class="field"><label>Date</label><input type="text" name="date" placeholder="DD/MM/YYYY" /></div>
+        </div>
+      </section>
+
+      <div class="btn-row">
+        <button type="submit">Submit Vendor Details</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

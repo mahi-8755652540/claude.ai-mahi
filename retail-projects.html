@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Retail Projects • Shree Spaace Solution</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Responsive Navbar • Shree Spaace Solution</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+/* COLORS */
+:root {
+  --gold: #b8860b;
+  --text: #7c693c;
+}
+
+/* NAVBAR WRAPPER */
+.sss-navbar {
+  width: 100%;
+  padding: 14px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  border-bottom: 2px solid #e7e1d2;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  font-family: "Inter", sans-serif;
+}
+
+/* LEFT & RIGHT MENUS */
+.nav-left,
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.sss-navbar a {
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.5px;
+  transition: 0.2s;
+}
+
+.sss-navbar a:hover {
+  color: var(--gold);
+}
+
+/* LOGO */
+.nav-logo {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nav-logo img {
+  width: 48px;
+  height: 48px;
+}
+
+.nav-logo span {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gold);
+  margin-top: 4px;
+}
+
+/* SOCIAL ICONS */
+.nav-social {
+  display: flex;
+  gap: 14px;
+}
+
+.nav-social i {
+  font-size: 15px;
+  color: var(--text);
+  transition: 0.2s;
+}
+
+.nav-social i:hover {
+  color: var(--gold);
+}
+
+/* HAMBURGER ICON (Mobile) */
+.hamburger {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text);
+}
+
+/* MOBILE MENU PANEL */
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  background: #ffffff;
+  border-top: 2px solid #e7e1d2;
+  padding: 20px;
+  gap: 20px;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 78px;
+  z-index: 150;
+}
+
+.mobile-menu a {
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.mobile-menu a:hover {
+  color: var(--gold);
+}
+
+/* RESPONSIVE */
+@media (max-width: 980px) {
+  .nav-left,
+  .nav-right {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="sss-navbar">
+
+  <!-- LEFT MENU -->
+  <div class="nav-left">
+    <a href="#Index.html home">HOME</a>
+    <a href="#">ABOUT US</a>
+    <a href="#">SERVICES</a>
+  </div>
+
+  <!-- LOGO CENTER -->
+  <div class="nav-logo">
+    <img src="asset/sss logo.png" alt="SSS Logo">
+    <span>SHREE SPAACE SOLUTION</span>
+  </div>
+
+  <!-- RIGHT MENU -->
+  <div class="nav-right">
+    <a href="#">PROCESS</a>
+    <a href="#">PROJECTS</a>
+    <a href="#">CONTACT US</a>
+
+    <div class="nav-social">
+      <a href="#"><i class="fa-brands fa-instagram"></i></a>
+      <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+      <a href="#"><i class="fa-solid fa-envelope"></i></a>
+    </div>
+  </div>
+
+  <!-- HAMBURGER ICON -->
+  <div class="hamburger" onclick="toggleMenu()">
+    <i class="fa-solid fa-bars"></i>
+  </div>
+
+</header>
+
+<!-- MOBILE MENU DROPDOWN -->
+<div id="mobileMenu" class="mobile-menu">
+  <a href="#">HOME</a>
+  <a href="#">ABOUT US</a>
+  <a href="#">SERVICES</a>
+  <a href="#">PROCESS</a>
+  <a href="#">PROJECTS</a>
+  <a href="#">CONTACT US</a>
+
+  <div style="display:flex; gap:15px; margin-top:10px;">
+    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+    <a href="#"><i class="fa-solid fa-envelope"></i></a>
+  </div>
+</div>
+
+<script>
+function toggleMenu() {
+  const menu = document.getElementById("mobileMenu");
+  menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+}
+</script>
+
+</body>
+</html>
+
+  <style>
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif; background: #f7f8fa; color: #0b5353; }
+    .container { width: 90%; max-width: 1200px; margin: auto; }
+
+    .hero {
+      padding: 80px 0 60px;
+      background: linear-gradient(135deg, #0b5353, #0b7070, #d4a017);
+      color: #fff;
+      text-align: center;
+    }
+    .hero h1 { margin: 0 0 10px; font-size: 40px; font-weight: 700; } /* Hero title remains large */
+    .hero p { margin: 0; font-size: 18px; opacity: 0.95; } /* Increased from 17px */
+
+    .section { padding: 50px 0 70px; }
+    .section-head { text-align: center; margin-bottom: 40px; }
+    .section-head h2 { margin: 0 0 6px; font-size: 26px; font-weight: 700; }
+    .section-head p { margin: 0; font-size: 15px; color: #555; }
+
+    .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+
+    .project-card {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 14px 28px rgba(0,0,0,0.22);
+      transition: 0.35s ease;
+      cursor: pointer;
+    }
+    .project-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 40px rgba(212,160,23,0.25);
+    }
+
+    .project-img { height: 210px; overflow: hidden; }
+    .project-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.45s ease; }
+    .project-card:hover img { transform: scale(1.08); }
+    .project-body { padding: 14px 16px 18px; } /* Padding, not text */
+    .project-body h3 { margin: 0 0 4px; font-size: 18px; font-weight: 600; } /* Increased from 17px */
+    .project-body p { margin: 0; font-size: 15px; color: #666; } /* Increased from 14px */
+    .footer { padding: 22px 0 26px; text-align: center; font-size: 14px; color: #fff; background: #0b5353; } /* Increased from 13px */
+
+    @media (max-width: 900px) {
+      .projects-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .hero { padding: 60px 0 40px; }
+      .hero h1 { font-size: 30px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .project-img { height: 200px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <section class="hero">
+    <div class="container">
+      <h1>Retail Projects</h1>
+      <p>Stores that highlight products, guide customers and drive sales.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2>Featured Retail Concepts</h2>
+        <p>Smart layouts, visual merchandising and impactful brand presence.</p>
+      </div>
+
+      <div class="projects-grid">
+
+        <div class="project-card">
+          <div class="project-img">
+            <img src="images/retail1.jpg" alt="Retail Project 1">
+          </div>
+          <div class="project-body">
+            <h3>Flagship Store</h3>
+            <p>Hero displays and a clear customer movement path across the store.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-img">
+            <img src="images/retail2.jpg" alt="Retail Project 2">
+          </div>
+          <div class="project-body">
+            <h3>Electronics Outlet</h3>
+            <p>Experience zones with product demos and dedicated trial areas.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-img">
+            <img src="images/retail3.jpg" alt="Retail Project 3">
+          </div>
+          <div class="project-body">
+            <h3>Fashion Boutique</h3>
+            <p>Display focus on key SKUs with curated racks and feature walls.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-img">
+            <img src="images/retail4.jpg" alt="Retail Project 4">
+          </div>
+          <div class="project-body">
+            <h3>Cosmetics Store</h3>
+            <p>High-visibility counters with integrated mirrors and lighting.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-img">
+            <img src="images/retail5.jpg" alt="Retail Project 5">
+          </div>
+          <div class="project-body">
+            <h3>Quick Service Kiosk</h3>
+            <p>Compact kiosk layout in malls with strong branding surfaces.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-img">
+            <img src="images/retail6.jpg" alt="Retail Project 6">
+          </div>
+          <div class="project-body">
+            <h3>Accessories Corner</h3>
+            <p>Wall-mounted displays designed for easy browsing and upsell.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-img">
+            <img src="images/retail7.jpg" alt="Retail Project 7">
+          </div>
+          <div class="project-body">
+            <h3>Multi-brand Store</h3>
+            <p>Zoning for different brands while maintaining a common language.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-img">
+            <img src="images/retail8.jpg" alt="Retail Project 8">
+          </div>
+          <div class="project-body">
+            <h3>Billing & Checkout</h3>
+            <p>Efficient billing counter with cue management and impulse displays.</p>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-img">
+            <img src="images/retail9.jpg" alt="Retail Project 9">
+          </div>
+          <div class="project-body">
+            <h3>Window Display</h3>
+            <p>Attention-grabbing façade visuals to pull customers inside.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SSS Footer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Correct font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --gold: #d4a53b;
+  --teal: #0a9c9c;
+  --dark: #0c0f16;
+  --white: #ffffff;
+}
+
+body {
+  font-family: "Poppins", sans-serif !important;
+}
+
+/* MAIN FOOTER */
+.sss-footer {
+  background: linear-gradient(135deg, #0b0f16, #0d1520, #004d4d);
+  color: var(--white);
+  padding: 70px 40px 20px;
+  font-family: "Poppins", sans-serif !important;
+}
+
+/* GOLD LINE */
+.sss-gold-line {
+  height: 3px;
+  width: 120px;
+  background: var(--gold);
+  margin-bottom: 30px;
+}
+
+/* GRID */
+.sss-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 40px;
+}
+@media(max-width: 900px) {
+  .sss-grid { grid-template-columns: 1fr; text-align: center; }
+}
+
+/* LOGO */
+.sss-footer-logo img {
+  width: 120px;
+  filter: drop-shadow(0px 0px 12px rgba(212,165,59,0.5));
+}
+
+.sss-footer-desc {
+  margin-top: 15px;
+  line-height: 1.6;
+  opacity: 0.85;
+  font-size: 14px;
+}
+
+/* HEADINGS */
+.sss-footer h3 {
+  font-size: 20px;
+  color: var(--gold);
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+/* LISTS */
+.sss-footer ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sss-footer ul li {
+  margin-bottom: 10px;
+}
+
+.sss-footer a {
+  color: #e0e0e0;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.3s ease;
+  font-weight: 400;
+}
+
+.sss-footer a:hover {
+  color: var(--gold);
+}
+
+/* CONTACT ICONS */
+.sss-footer i {
+  margin-right: 8px;
+  color: var(--gold);
+}
+
+/* COPYRIGHT */
+.sss-copy {
+  margin-top: 45px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  text-align: center;
+  font-size: 14px;
+  opacity: 0.75;
+}
+
+/* GOLD LINKS */
+.sss-footer-link {
+  color: var(--gold) !important;
+  font-weight: 500;
+}
+</style>
+</head>
+
+<body>
+
+<footer class="sss-footer">
+
+  
+  <div class="sss-grid">
+
+    <!-- LOGO + ABOUT -->
+    <div class="sss-footer-logo">
+      <img src="asset/sss logo.png" alt="SSS Logo">
+      <p class="sss-footer-desc">
+        Shree Spaace Solution is a premium Interior Turnkey & Construction company 
+        delivering corporate, commercial & industrial spaces with quality and precision.
+      </p>
+    </div>
+
+    <!-- QUICK LINKS -->
+    <div>
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About Company</a></li>
+        <li><a href="#">Our Services</a></li>
+        <li><a href="#">Projects</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <!-- WHAT WE DO -->
+    <div>
+      <h3>What We Do</h3>
+      <ul>
+        <li><a href="#">Design & Build</a></li>
+        <li><a href="#">General Contracting</a></li>
+        <li><a href="#">Refurbishment</a></li>
+        <li><a href="#">Retail & Office Fitouts</a></li>
+        <li><a href="#">Industrial Spaces</a></li>
+      </ul>
+    </div>
+
+    <!-- CONTACT -->
+    <div>
+      <h3>Contact</h3>
+      <ul>
+        <li><i>📍</i> Gurgaon, Haryana</li>
+        <li><i>📞</i> +91-9871548224</li>
+        <li><i>✉️</i> info@shreespaacesolution.com</li>
+        <br>
+
+        <li><a class="sss-footer-link" href="#">Vendor Registration →</a></li>
+        <li><a class="sss-footer-link" href="#">Careers →</a></li>
+        <li><a class="sss-footer-link" href="#">Material Supplier • Vendor Registration →</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="sss-copy">
+    © 2025 Shree Spaace Solution Pvt. Ltd. All Rights Reserved.
+  </div>
+
+</footer>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SSS Assistant • Shree Spaace Solution</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --sss-gold: #f4c06a;
+      --sss-gold-soft: rgba(244, 192, 106, 0.35);
+      --sss-teal: #0a9c9c;
+      --sss-teal-soft: rgba(10, 156, 156, 0.2);
+      --sss-bg-dark: rgba(7, 10, 16, 0.9);
+      --sss-card-bg: rgba(18, 24, 38, 0.9);
+      --sss-border: rgba(255, 255, 255, 0.09);
+      --sss-text: #f5f5f7;
+      --sss-muted: #9da3b5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    /* Floating Button */
+    .sss-chat-launcher {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 64px;
+      height: 64px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0%, #ffffff, var(--sss-gold)) padding-box,
+                  linear-gradient(135deg, var(--sss-gold), var(--sss-teal)) border-box;
+      border: 2px solid transparent;
+      box-shadow:
+        0 0 0 0 rgba(244, 192, 106, 0.7),
+        0 18px 40px rgba(0, 0, 0, 0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 99999;
+      animation: sss-pulse 2.2s infinite;
+    }
+
+    .sss-chat-launcher-icon-wrap { /* Icon wrap styling, not text */
+      position: relative;
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0%, #ffffff, #fce8c4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .sss-chat-launcher-icon-ring { /* Icon ring styling, not text */
+      position: absolute;
+      inset: -3px;
+      border-radius: inherit;
+      border: 2px solid rgba(244, 192, 106, 0.65);
+      box-shadow: 0 0 12px rgba(244, 192, 106, 0.9);
+      pointer-events: none;
+    }
+
+    .sss-chat-launcher-icon { /* Icon styling, not text */
+      position: relative;
+      font-size: 24px;
+      color: #1d2333;
+    }
+
+    .sss-chat-launcher-badge { /* Increased from 10px */
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      background: var(--sss-teal);
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 999px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.35);
+    }
+
+    @keyframes sss-pulse {
+      0% {
+        transform: translateY(0) scale(1);
+        box-shadow: 0 0 0 0 rgba(244, 192, 106, 0.7);
+      }
+      70% {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 0 0 18px rgba(244, 192, 106, 0);
+      }
+      100% {
+        transform: translateY(0) scale(1);
+        box-shadow: 0 0 0 0 rgba(244, 192, 106, 0);
+      }
+    }
+
+    /* Chat Window */
+    .sss-chat-container {
+      position: fixed;
+      bottom: 104px;
+      right: 24px;
+      width: 360px;
+      max-width: calc(100% - 32px);
+      max-height: 540px;
+      display: flex;
+      flex-direction: column;
+      border-radius: 24px;
+      background: linear-gradient(145deg, rgba(10, 14, 24, 0.98), rgba(8, 20, 29, 0.98));
+      box-shadow:
+        0 26px 60px rgba(0, 0, 0, 0.65),
+        0 0 0 1px rgba(244, 192, 106, 0.15);
+      overflow: hidden;
+      transform-origin: bottom right;
+      transform: scale(0.9) translateY(16px);
+      opacity: 0;
+      visibility: hidden;
+      transition:
+        opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s ease;
+      z-index: 99998;
+      backdrop-filter: blur(20px);
+    }
+
+    .sss-chat-container.sss-open {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1) translateY(0);
+    }
+
+    /* Header */
+    .sss-chat-header {
+      display: flex;
+      align-items: center;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--sss-border);
+      background: radial-gradient(circle at top left, rgba(244, 192, 106, 0.16), transparent 55%),
+                  radial-gradient(circle at top right, rgba(10, 156, 156, 0.24), transparent 60%);
+      position: relative;
+    }
+
+    .sss-chat-header::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(244, 192, 106, 0.25), transparent 40%);
+      opacity: 0.25;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .sss-chat-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .sss-chat-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: radial-gradient(circle at 30% 0%, #ffffff, #fce1a4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.12),
+        0 10px 18px rgba(0, 0, 0, 0.6);
+    }
+
+    .sss-chat-logo img {
+      width: 82%;
+      height: 82%;
+      object-fit: contain;
+    }
+
+    .sss-chat-logo-fallback {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1d2333;
+      letter-spacing: 0.02em;
+    }
+
+    .sss-chat-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sss-chat-title { /* Increased from 14px */
+      font-family: "Poppins", system-ui, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--sss-text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .sss-chat-pill { /* Increased from 10px */
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(244, 192, 106, 0.5);
+      text-transform: uppercase;
+    }
+
+    .sss-chat-subtitle { /* Increased from 11px */
+      font-size: 11px;
+      color: var(--sss-muted);
+    }
+
+    .sss-chat-header-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .sss-chat-status-dot { /* Status dot styling, not text */
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #1dd1a1;
+      box-shadow: 0 0 0 4px rgba(29, 209, 161, 0.15);
+    }
+
+    .sss-chat-close-btn { /* Close button styling, not text */
+      background: transparent;
+      border: none;
+      color: var(--sss-muted);
+      cursor: pointer;
+      border-radius: 999px;
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: background 0.16s ease, color 0.16s ease, transform 0.1s ease;
+    }
+
+    .sss-chat-close-btn:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--sss-text);
+      transform: translateY(-1px);
+    }
+
+    /* Body */
+    .sss-chat-body {
+      display: flex;
+      flex-direction: column;
+      padding: 10px 12px 12px;
+      gap: 10px;
+      min-height: 260px;
+      max-height: 360px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+    }
+
+    .sss-chat-body::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .sss-chat-body::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .sss-chat-body::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.22);
+      border-radius: 999px;
+    }
+
+    .sss-message-row {
+      display: flex;
+      margin-bottom: 3px;
+    }
+
+    .sss-message-row.bot {
+      justify-content: flex-start;
+    }
+
+    .sss-message-row.user {
+      justify-content: flex-end;
+    }
+
+    .sss-message {
+      max-width: 80%;
+      padding: 8px 10px;
+      border-radius: 16px;
+      font-size: 13px;
+      line-height: 1.45;
+      position: relative;
+      animation: sss-msg-in 0.18s ease-out;
+      word-wrap: break-word;
+    }
+
+    .sss-message.bot { /* Increased from 13px */
+      background: radial-gradient(circle at top left, rgba(244, 192, 106, 0.26), rgba(10, 18, 30, 1));
+      border: 1px solid rgba(244, 192, 106, 0.35);
+      color: var(--sss-text);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.55);
+    }
+
+    .sss-message.user {
+      background: linear-gradient(135deg, var(--sss-teal), #35c2c2);
+      color: #031015;
+      border-bottom-right-radius: 4px;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.5);
+    }
+
+    .sss-message-meta { /* Increased from 10px */
+      font-size: 10px;
+      color: var(--sss-muted);
+      margin-top: 1px;
+    }
+
+    @keyframes sss-msg-in {
+      from {
+        opacity: 0;
+        transform: translateY(4px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Suggestion Chips */
+    .sss-suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .sss-chip {
+      font-size: 12px; /* Increased from 11px */
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--sss-muted);
+      cursor: pointer;
+      transition: background 0.16s ease, color 0.16s ease, border-color 0.16s ease, transform 0.08s ease;
+      white-space: nowrap;
+    }
+
+    .sss-chip:hover {
+      background: var(--sss-teal-soft);
+      border-color: rgba(10, 156, 156, 0.7);
+      color: var(--sss-text);
+      transform: translateY(-1px);
+    }
+
+    /* Lead Form */
+    .sss-lead-card {
+      margin-top: 4px;
+      padding: 10px 10px 8px;
+      border-radius: 14px;
+      background: radial-gradient(circle at top left, rgba(244, 192, 106, 0.22), rgba(10, 18, 30, 1));
+      border: 1px solid rgba(244, 192, 106, 0.4);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.55);
+    }
+
+    .sss-lead-title { /* Increased from 12px */
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--sss-text);
+      margin-bottom: 4px;
+    }
+
+    .sss-lead-sub { /* Increased from 11px */
+      font-size: 11px;
+      color: var(--sss-muted);
+      margin-bottom: 8px;
+    }
+
+    .sss-lead-grid { /* Grid styling, not text */
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .sss-lead-field {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sss-lead-label { /* Increased from 10px */
+      font-size: 10px;
+      color: var(--sss-muted);
+    }
+
+    .sss-lead-input, /* Increased from 11px */
+    .sss-lead-select { /* Increased from 11px */
+      font-size: 11px;
+      padding: 6px 8px;
+      border-radius: 9px;
+      background: rgba(4, 8, 14, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--sss-text);
+      outline: none;
+    }
+
+    .sss-lead-input::placeholder {
+      color: rgba(157, 163, 181, 0.7);
+    }
+
+    .sss-lead-select {
+      appearance: none;
+      background-image: linear-gradient(45deg, transparent 50%, var(--sss-gold) 50%),
+                        linear-gradient(135deg, var(--sss-gold) 50%, transparent 50%);
+      background-position: calc(100% - 12px) 50%, calc(100% - 8px) 50%;
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+    }
+
+    .sss-lead-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+      gap: 6px;
+    }
+
+    .sss-lead-note { /* Increased from 9px */
+      font-size: 9px;
+      color: rgba(244, 192, 106, 0.9);
+    }
+
+    .sss-lead-submit-btn { /* Increased from 11px */
+      font-size: 11px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, var(--sss-gold), #ffe0a2);
+      color: #23160a;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 14px 26px rgba(0, 0, 0, 0.65);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.1s ease;
+      white-space: nowrap;
+    }
+
+    .sss-lead-submit-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.75);
+    }
+
+    .sss-lead-submit-btn:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.7);
+    }
+
+    /* Typing Indicator */
+    .sss-typing {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 14px;
+      background: rgba(10, 14, 22, 0.94);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      width: fit-content;
+      margin-bottom: 4px;
+    }
+
+    .sss-typing-dots {
+      display: flex;
+      gap: 3px;
+      align-items: center;
+    }
+
+    .sss-typing-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(244, 192, 106, 0.75);
+      animation: sss-bounce 1.2s infinite ease-in-out;
+    }
+
+    .sss-typing-dot:nth-child(2) {
+      animation-delay: 0.16s;
+    }
+
+    .sss-typing-dot:nth-child(3) {
+      animation-delay: 0.32s;
+    }
+
+    @keyframes sss-bounce {
+      0%, 80%, 100% {
+        transform: scale(0.7) translateY(0);
+        opacity: 0.6;
+      }
+      40% {
+        transform: scale(1) translateY(-2px);
+        opacity: 1;
+      }
+    }
+
+    .sss-typing-label { /* Increased from 10px */
+      font-size: 10px;
+      color: var(--sss-muted);
+    }
+
+    /* Footer Input */
+    .sss-chat-footer {
+      padding: 8px 10px 10px;
+      border-top: 1px solid var(--sss-border);
+      background: radial-gradient(circle at top left, rgba(244, 192, 106, 0.14), rgba(8, 12, 20, 0.98));
+    }
+
+    .sss-input-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sss-input-wrap {
+      flex: 1;
+      position: relative;
+    }
+
+    .sss-input { /* Increased from 12px */
+      width: 100%;
+      padding: 9px 80px 9px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(4, 8, 14, 0.95);
+      color: var(--sss-text);
+      font-size: 12px;
+      outline: none;
+    }
+
+    .sss-input::placeholder {
+      color: rgba(157, 163, 181, 0.7);
+    }
+
+    .sss-input-tools {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .sss-icon-btn {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      border: none;
+      background: transparent;
+      color: var(--sss-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: background 0.14s ease, color 0.14s ease, transform 0.08s ease;
+    } /* Icon button styling, not text */
+
+    .sss-icon-btn:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--sss-text);
+      transform: translateY(-1px);
+    }
+
+    .sss-send-btn {
+      background: linear-gradient(135deg, var(--sss-teal), #43d1d1);
+      color: #041013;
+      box-shadow: 0 12px 22px rgba(0, 0, 0, 0.65);
+    }
+
+    .sss-send-btn:hover {
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.7);
+    }
+
+    /* Small note strip */
+    .sss-footer-note { /* Increased from 9px */
+      margin-top: 6px;
+      font-size: 9px;
+      color: var(--sss-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sss-footer-brand { /* Increased from 9px */
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(244, 192, 106, 0.85);
+    }
+
+    @media (max-width: 500px) {
+      .sss-chat-container {
+        right: 12px;
+        left: 12px;
+        width: auto;
+        bottom: 88px;
+        max-height: 80vh;
+      }
+
+      .sss-chat-launcher {
+        bottom: 16px;
+        right: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Chat Button -->
+  <div class="sss-chat-launcher" id="sssLauncher">
+    <div class="sss-chat-launcher-icon-wrap">
+      <div class="sss-chat-launcher-icon-ring"></div>
+      <div class="sss-chat-launcher-icon">💬</div>
+    </div>
+    <div class="sss-chat-launcher-badge">SSS</div>
+  </div>
+
+  <!-- Chat Window -->
+  <div class="sss-chat-container" id="sssChat">
+    <!-- Header -->
+    <div class="sss-chat-header">
+      <div class="sss-chat-header-left">
+        <div class="sss-chat-logo">
+          <!-- TODO: Replace src with your logo path -->
+          <!-- <img src="images/sss-logo.png" alt="Shree Spaace Solution"> -->
+          <span class="sss-chat-logo-fallback">SS</span>
+        </div>
+        <div class="sss-chat-title-wrap">
+          <div class="sss-chat-title">
+            SSS Assistant
+            <span class="sss-chat-pill">Virtual Assistant</span>
+          </div>
+          <div class="sss-chat-subtitle">Helping you with turnkey interiors & construction</div>
+        </div>
+      </div>
+      <div class="sss-chat-header-right">
+        <div class="sss-chat-status-dot"></div>
+        <button class="sss-chat-close-btn" id="sssCloseBtn" title="Close">
+          ✕
+        </button>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="sss-chat-body" id="sssBody">
+      <!-- Messages will be injected here by JS -->
+    </div>
+
+    <!-- Footer -->
+    <div class="sss-chat-footer">
+      <div class="sss-input-row">
+        <div class="sss-input-wrap">
+          <input
+            type="text"
+            id="sssInput"
+            class="sss-input"
+            placeholder="Ask about interiors, turnkey projects, timelines, budget..."
+          />
+          <div class="sss-input-tools">
+            <button class="sss-icon-btn" id="sssMicBtn" title="Voice input">
+              🎙
+            </button>
+            <button class="sss-icon-btn sss-send-btn" id="sssSendBtn" title="Send">
+              ➤
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="sss-footer-note">
+        <span class="sss-footer-brand">Shree Spaace Solution</span>
+        <span>Mahindra Singh</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /*********************************************************
+     * CONFIG – YOU CAN EDIT THIS PART ONLY
+     *********************************************************/
+    // 🔁 Google Sheet Apps Script URL (POST endpoint)
+    const GOOGLE_SCRIPT_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+    // 📲 WhatsApp number with country code (no + sign)
+    // Example: "919871234567"
+    const WHATSAPP_NUMBER = "919871548224";
+
+    // 🧠 Basic tags for WhatsApp message prefix
+    const WHATSAPP_INTRO = "New enquiry from SSS Assistant (Website Chat):%0A";
+
+    /*********************************************************
+     * CORE LOGIC – ADVANCED FRONTEND ASSISTANT
+     *********************************************************/
+
+    const launcher = document.getElementById("sssLauncher");
+    const chat = document.getElementById("sssChat");
+    const closeBtn = document.getElementById("sssCloseBtn");
+    const bodyEl = document.getElementById("sssBody");
+    const inputEl = document.getElementById("sssInput");
+    const sendBtn = document.getElementById("sssSendBtn");
+    const micBtn = document.getElementById("sssMicBtn");
+
+    let isOpen = false;
+    let isLeadFormVisible = false;
+    let typingTimeout = null;
+    let recognition = null;
+    let userProfile = {
+      name: "",
+      city: "",
+      areaType: "",
+      budget: ""
+    };
+
+    // Toggle chat
+    const toggleChat = () => {
+      isOpen = !isOpen;
+      if (isOpen) {
+        chat.classList.add("sss-open");
+        inputEl.focus();
+      } else {
+        chat.classList.remove("sss-open");
+      }
+    };
+
+    launcher.addEventListener("click", toggleChat);
+    closeBtn.addEventListener("click", toggleChat);
+
+    // Auto-open on first visit after short delay (optional)
+    setTimeout(() => {
+      if (!isOpen) {
+        toggleChat();
+      }
+    }, 2200);
+
+    // Utility: Create message element
+    function addMessage(text, sender = "bot", withMeta = true) {
+      const row = document.createElement("div");
+      row.className = `sss-message-row ${sender}`;
+
+      const msg = document.createElement("div");
+      msg.className = `sss-message ${sender}`;
+      msg.innerHTML = text;
+
+      row.appendChild(msg);
+      bodyEl.appendChild(row);
+
+      if (withMeta) {
+        const meta = document.createElement("div");
+        meta.className = "sss-message-meta";
+        const timeStr = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+        meta.textContent = (sender === "bot" ? "SSS Assistant • " : "You • ") + timeStr;
+        msg.appendChild(meta);
+      }
+
+      // Scroll to bottom
+      bodyEl.scrollTop = bodyEl.scrollHeight;
+    }
+
+    // Typing indicator
+    function showTyping() {
+      // Remove existing
+      const old = document.getElementById("sssTyping");
+      if (old) old.remove();
+
+      const wrap = document.createElement("div");
+      wrap.id = "sssTyping";
+      wrap.className = "sss-message-row bot";
+
+      const box = document.createElement("div");
+      box.className = "sss-typing";
+
+      const dots = document.createElement("div");
+      dots.className = "sss-typing-dots";
+
+      for (let i = 0; i < 3; i++) {
+        const dot = document.createElement("div");
+        dot.className = "sss-typing-dot";
+        dots.appendChild(dot);
+      }
+
+      const label = document.createElement("div");
+      label.className = "sss-typing-label";
+      label.textContent = "SSS Assistant is typing...";
+
+      box.appendChild(dots);
+      box.appendChild(label);
+      wrap.appendChild(box);
+      bodyEl.appendChild(wrap);
+      bodyEl.scrollTop = bodyEl.scrollHeight;
+    }
+
+    function hideTyping() {
+      const el = document.getElementById("sssTyping");
+      if (el) el.remove();
+    }
+
+    // Suggestion chips
+    function addSuggestions() {
+      const wrapRow = document.createElement("div");
+      wrapRow.className = "sss-message-row bot";
+
+      const msg = document.createElement("div");
+      msg.className = "sss-message bot";
+      msg.innerHTML = `
+        I can help you with:
+        <div class="sss-suggestions">
+          <button class="sss-chip" data-q="Office interior turnkey solutions">Office Interiors</button>
+          <button class="sss-chip" data-q="Retail and showroom interior design">Retail & Showrooms</button>
+          <button class="sss-chip" data-q="Factory, industrial shed and construction">Factory & Construction</button>
+          <button class="sss-chip" data-q="Request a quote or site visit">Request a Quote</button>
+          <button class="sss-chip" data-q="Share our company profile PDF">Company Profile</button>
+          <button class="sss-chip" data-q="Talk to a human on WhatsApp">Talk on WhatsApp</button>
+        </div>
+      `;
+
+      wrapRow.appendChild(msg);
+      bodyEl.appendChild(wrapRow);
+      bodyEl.scrollTop = bodyEl.scrollHeight;
+
+      msg.querySelectorAll(".sss-chip").forEach(chip => {
+        chip.addEventListener("click", () => {
+          const q = chip.getAttribute("data-q");
+          handleUserInput(q);
+        });
+      });
+    }
+
+    // Lead capture form
+    function showLeadForm(promptSourceText = "") {
+      if (isLeadFormVisible) return;
+      isLeadFormVisible = true;
+
+      const row = document.createElement("div");
+      row.className = "sss-message-row bot";
+
+      const card = document.createElement("div");
+      card.className = "sss-lead-card";
+
+      card.innerHTML = `
+        <div class="sss-lead-title">Quick project insight</div>
+        <div class="sss-lead-sub">
+          Fill this 20-second form and our team will share a proposal / call you back.
+        </div>
+        <div class="sss-lead-grid">
+          <div class="sss-lead-field">
+            <label class="sss-lead-label">Name*</label>
+            <input class="sss-lead-input" id="sssLeadName" placeholder="Your name" />
+          </div>
+          <div class="sss-lead-field">
+            <label class="sss-lead-label">City*</label>
+            <input class="sss-lead-input" id="sssLeadCity" placeholder="e.g. Gurugram" />
+          </div>
+          <div class="sss-lead-field">
+            <label class="sss-lead-label">Space Type*</label>
+            <select class="sss-lead-select" id="sssLeadArea">
+              <option value="">Select</option>
+              <option>Office</option>
+              <option>Retail / Showroom</option>
+              <option>Factory / Industrial</option>
+              <option>Institutional</option>
+              <option>Residence</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="sss-lead-field">
+            <label class="sss-lead-label">Approx Budget (₹)*</label>
+            <input class="sss-lead-input" id="sssLeadBudget" placeholder="e.g. 15–40 Lacs" />
+          </div>
+        </div>
+        <div class="sss-lead-field">
+          <label class="sss-lead-label">Project details / notes</label>
+          <input class="sss-lead-input" id="sssLeadNotes"
+            placeholder="Size, timeline or any key points..." />
+        </div>
+        <div class="sss-lead-footer">
+          <span class="sss-lead-note">Auto-shared with Shree Spaace on WhatsApp & CRM.</span>
+          <button class="sss-lead-submit-btn" id="sssLeadSubmit">
+            Send &amp; WhatsApp
+          </button>
+        </div>
+      `;
+
+      row.appendChild(card);
+      bodyEl.appendChild(row);
+      bodyEl.scrollTop = bodyEl.scrollHeight;
+
+      const submitBtn = card.querySelector("#sssLeadSubmit");
+      submitBtn.addEventListener("click", () => handleLeadSubmit(promptSourceText));
+    }
+
+    async function handleLeadSubmit(promptSourceText = "") {
+      const name = document.getElementById("sssLeadName").value.trim();
+      const city = document.getElementById("sssLeadCity").value.trim();
+      const area = document.getElementById("sssLeadArea").value.trim();
+      const budget = document.getElementById("sssLeadBudget").value.trim();
+      const notes = document.getElementById("sssLeadNotes").value.trim();
+
+      if (!name || !city || !area || !budget) {
+        alert("Please fill all required fields (Name, City, Space Type, Budget).");
+        return;
+      }
+
+      userProfile = { name, city, areaType: area, budget };
+
+      // Save into Google Sheet via Apps Script
+      if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL.startsWith("http")) {
+        try {
+          const payload = {
+            name,
+            city,
+            areaType: area,
+            budget,
+            notes,
+            sourceText: promptSourceText || "",
+            createdAt: new Date().toISOString()
+          };
+
+          await fetch(GOOGLE_SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+          });
+        } catch (err) {
+          console.warn("Lead sending to Google Sheet failed:", err);
+        }
+      } else {
+        console.log("Lead data (configure GOOGLE_SCRIPT_URL to send to sheet):", {
+          name,
+          city,
+          area,
+          budget,
+          notes
+        });
+      }
+
+      // Open WhatsApp with pre-filled text
+      if (WHATSAPP_NUMBER && /^\d{10,15}$/.test(WHATSAPP_NUMBER)) {
+        const txtLines = [
+          WHATSAPP_INTRO,
+          `Name: ${name}`,
+          `City: ${city}`,
+          `Space Type: ${area}`,
+          `Budget: ${budget}`,
+          notes ? `Notes: ${notes}` : "",
+          promptSourceText ? `Chat Context: ${promptSourceText}` : ""
+        ].filter(Boolean);
+        const fullTxt = encodeURI(txtLines.join("%0A"));
+        const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${fullTxt}`;
+        window.open(waUrl, "_blank");
+      }
+
+      addMessage("Thank you! Your details are shared with our team. We will connect with you shortly with design + cost options. Anything else you'd like to know right now?", "bot");
+    }
+
+    // Rule-based AI-ish response
+    function getBotResponse(inputText) {
+      const txt = inputText.toLowerCase();
+
+      if (txt.includes("quote") || txt.includes("estimate") || txt.includes("budget") || txt.includes("site visit")) {
+        showLeadForm(inputText);
+        return "Happy to share a budget and proposal. Fill this quick form so we can give you a realistic turnkey estimate.";
+      }
+
+      if (txt.includes("office")) {
+        return "For office interiors we handle space planning, workstations, cabins, ceiling, MEP, furniture, branding and complete handover. Tell me: approx carpet area and city?";
+      }
+
+      if (txt.includes("retail") || txt.includes("showroom")) {
+        return "For retail & showroom projects we manage façade, display systems, lighting, trial rooms, storage and billing areas – end to end. Would you like help with concept design or turnkey execution?";
+      }
+
+      if (txt.includes("factory") || txt.includes("industrial")) {
+        return "For factory & industrial projects, Shree Spaace covers civil work, admin block interiors, utility rooms, canteens and external development. What stage is your site in right now – new build or renovation?";
+      }
+
+      if (txt.includes("profile") || txt.includes("company profile") || txt.includes("about you")) {
+        return "Shree Spaace Solution is a turnkey interior & construction company. We specialise in office, retail, institutional and industrial projects – from design to handover. You can share your email and we’ll send the detailed company profile PDF.";
+      }
+
+      if (txt.includes("whatsapp") || txt.includes("call") || txt.includes("human")) {
+        if (WHATSAPP_NUMBER && /^\d{10,15}$/.test(WHATSAPP_NUMBER)) {
+          const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURI("Hi, I came from the website SSS Assistant. I’d like to discuss my project.")}`;
+          window.open(waUrl, "_blank");
+          return "Connecting you to our team on WhatsApp in a new tab. You can share drawings / photos there as well.";
+        } else {
+          return "You can also connect with us directly on WhatsApp – just add our business number and share your drawings. (WhatsApp number not yet configured inside the assistant.)";
+        }
+      }
+
+      if (txt.includes("time") || txt.includes("timeline") || txt.includes("days")) {
+        return "Typical corporate interior projects take 45–90 days depending on area, services and decision speed. Share your carpet area and we can guide you more precisely.";
+      }
+
+      if (txt.includes("turnkey")) {
+        return "Turnkey means you get a single point of responsibility – drawings, approvals, material, civil, false ceiling, electrical, HVAC, furniture, branding and handover – all managed by Shree Spaace Solution.";
+      }
+
+      if (txt.includes("resume") || txt.includes("job") || txt.includes("career") || txt.includes("hiring")) {
+        return "For careers with Shree Spaace Solution, you can share your resume on email or WhatsApp. Mention your role (Site Engineer / Architect / Draftsman etc.) and years of experience.";
+      }
+
+      return "Got it. I can help with project budget, scope, timelines or process. If you share your city, space type and approx area, I can guide you more accurately.";
+    }
+
+    // Handle user input
+    function handleUserInput(optionalText) {
+      const txt = (optionalText || inputEl.value).trim();
+      if (!txt) return;
+
+      // Show user message
+      addMessage(txt, "user");
+      inputEl.value = "";
+
+      // Typing indicator
+      showTyping();
+
+      clearTimeout(typingTimeout);
+      typingTimeout = setTimeout(() => {
+        hideTyping();
+        const response = getBotResponse(txt);
+        addMessage(response, "bot");
+      }, 700);
+    }
+
+    sendBtn.addEventListener("click", () => handleUserInput());
+    inputEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        handleUserInput();
+      }
+    });
+
+    // Voice to text (Web Speech API)
+    function setupVoiceInput() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        console.log("Speech recognition not supported in this browser.");
+        return;
+      }
+
+      recognition = new SpeechRecognition();
+      recognition.lang = "en-IN";
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.addEventListener("result", (event) => {
+        const transcript = event.results[0][0].transcript;
+        inputEl.value = transcript;
+        handleUserInput(transcript);
+      });
+
+      recognition.addEventListener("error", (e) => {
+        console.log("Speech recognition error:", e.error);
+        alert("Voice input error or permission denied. You can type instead.");
+      });
+
+      recognition.addEventListener("end", () => {
+        micBtn.classList.remove("sss-mic-active");
+      });
+    }
+
+    micBtn.addEventListener("click", () => {
+      if (!recognition) {
+        setupVoiceInput();
+      }
+      if (!recognition) {
+        alert("Voice input is not supported in this browser.");
+        return;
+      }
+      try {
+        recognition.start();
+        micBtn.classList.add("sss-mic-active");
+      } catch (e) {
+        console.log("Speech recognition start error:", e);
+      }
+    });
+
+    // Initial welcome flow
+    function initConversation() {
+      addMessage("Hi, I’m <b>SSS Assistant</b> from Shree Spaace Solution 👋", "bot");
+      addMessage("Ask me anything about office interiors, turnkey fit-outs, factory construction or timelines – or tap a quick option below.", "bot");
+      addSuggestions();
+    }
+
+    initConversation();
+  </script>
+</body>
+</html>

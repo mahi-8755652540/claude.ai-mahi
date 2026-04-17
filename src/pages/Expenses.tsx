@@ -344,13 +344,9 @@ const Expenses = () => {
 
       // 2. Adaptive Logic: Try inserting with all fields, fallback if columns missing
       const performSubmission = async (data: any, isRetry = false) => {
-        // AUTO-APPROVE AND DEDUCT IF WALLET
-        const isWallet = newExpense.payment_method === "wallet";
-        if (isWallet) {
-          data.status = "approved";
-          data.approved_at = new Date().toISOString();
-          data.approved_by = user?.id;
-        }
+        // REMOVED AUTO-APPROVE: All expenses should now require manual approval
+        // even if using Wallet, to ensure administrative oversight.
+        data.status = "pending";
 
         const query = editingExpenseId 
           ? supabase.from("expenses").update(data).eq("id", editingExpenseId)
@@ -374,22 +370,7 @@ const Expenses = () => {
           throw error;
         }
 
-        // DEDUCT FROM WALLET REAL-TIME
-        if (isWallet && !editingExpenseId) {
-          const { data: profileData } = await supabase.from("profiles").select("wallet_balance").eq("id", user?.id).maybeSingle();
-          const newBal = (profileData?.wallet_balance || 0) - data.amount;
-          
-          await supabase.from("profiles").update({ wallet_balance: newBal }).eq("id", user?.id);
-          
-          // Add transaction log
-          await supabase.from("wallet_transactions" as any).insert({
-            user_id: user?.id,
-            amount: data.amount,
-            type: "debit",
-            description: `Instant wallet deduction: ${data.title}`,
-            date: new Date().toISOString()
-          });
-        }
+        // DEDUCTION REMOVED FROM HERE: Now handled in handleApprove when admin clicks Approve.
 
         return result;
       };

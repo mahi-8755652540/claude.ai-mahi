@@ -1,0 +1,79 @@
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	modified:   README.md
+	new file:   android/.gitignore
+	new file:   android/app/.gitignore
+	new file:   android/app/build.gradle
+	new file:   android/app/capacitor.build.gradle
+	new file:   android/app/proguard-rules.pro
+	new file:   android/app/src/androidTest/java/com/getcapacitor/myapp/ExampleInstrumentedTest.java
+	new file:   android/app/src/main/AndroidManifest.xml
+	new file:   android/app/src/main/java/com/shreespaacesolution/ssscore/MainActivity.java
+	new file:   android/app/src/main/res/drawable-land-hdpi/splash.png
+	new file:   android/app/src/main/res/drawable-land-mdpi/splash.png
+	new file:   android/app/src/main/res/drawable-land-xhdpi/splash.png
+	new file:   android/app/src/main/res/drawable-land-xxhdpi/splash.png
+	new file:   android/app/src/main/res/drawable-land-xxxhdpi/splash.png
+	new file:   android/app/src/main/res/drawable-port-hdpi/splash.png
+	new file:   android/app/src/main/res/drawable-port-mdpi/splash.png
+	new file:   android/app/src/main/res/drawable-port-xhdpi/splash.png
+	new file:   android/app/src/main/res/drawable-port-xxhdpi/splash.png
+	new file:   android/app/src/main/res/drawable-port-xxxhdpi/splash.png
+	new file:   android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml
+	new file:   android/app/src/main/res/drawable/ic_launcher_background.xml
+	new file:   android/app/src/main/res/drawable/splash.png
+	new file:   android/app/src/main/res/layout/activity_main.xml
+	new file:   android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
+	new file:   android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
+	new file:   android/app/src/main/res/mipmap-hdpi/ic_launcher.png
+	new file:   android/app/src/main/res/mipmap-hdpi/ic_launcher_foreground.png
+	new file:   android/app/src/main/res/mipmap-hdpi/ic_launcher_round.png
+	new file:   android/app/src/main/res/mipmap-mdpi/ic_launcher.png
+	new file:   android/app/src/main/res/mipmap-mdpi/ic_launcher_foreground.png
+	new file:   android/app/src/main/res/mipmap-mdpi/ic_launcher_round.png
+	new file:   android/app/src/main/res/mipmap-xhdpi/ic_launcher.png
+	new file:   android/app/src/main/res/mipmap-xhdpi/ic_launcher_foreground.png
+	new file:   android/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png
+	new file:   android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png
+	new file:   android/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png
+	new file:   android/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png
+	new file:   android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
+	new file:   android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_foreground.png
+	new file:   android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png
+	new file:   android/app/src/main/res/values/ic_launcher_background.xml
+	new file:   android/app/src/main/res/values/strings.xml
+	new file:   android/app/src/main/res/values/styles.xml
+	new file:   android/app/src/main/res/xml/file_paths.xml
+	new file:   android/app/src/test/java/com/getcapacitor/myapp/ExampleUnitTest.java
+	new file:   android/build.gradle
+	new file:   android/capacitor.settings.gradle
+	new file:   android/gradle.properties
+	new file:   android/gradle/wrapper/gradle-wrapper.jar
+	new file:   android/gradle/wrapper/gradle-wrapper.properties
+	new file:   android/gradlew
+	new file:   android/gradlew.bat
+	new file:   android/settings.gradle
+	new file:   android/variables.gradle
+	new file:   capacitor.config.ts
+	modified:   package-lock.json
+	modified:   src/App.tsx
+	new file:   src/components/labour/ContractorForm.tsx
+	modified:   src/components/layout/Sidebar.tsx
+	modified:   src/hooks/useAuth.tsx
+	modified:   src/index.css
+	modified:   src/integrations/supabase/types.ts
+	modified:   src/lib/generateAttendanceReport.ts
+	modified:   src/pages/Attendance.tsx
+	modified:   src/pages/Auth.tsx
+	new file:   src/pages/Inventory.tsx
+	modified:   src/pages/Labour.tsx
+	modified:   src/pages/Reports.tsx
+	modified:   src/pages/SiteDetails.tsx
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	git_status.txt
+

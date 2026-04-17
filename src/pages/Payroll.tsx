@@ -37,7 +37,7 @@ import { toast } from "sonner";
 import { SalarySlipDialog } from "@/components/payroll/SalarySlipDialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
-import { format, getDaysInMonth, startOfMonth, endOfMonth } from "date-fns";
+import { format, getDaysInMonth, startOfMonth, endOfMonth, differenceInMonths, parseISO } from "date-fns";
 
 const months = [
   "January", "February", "March", "April", "May", "June",
@@ -211,7 +211,7 @@ const Payroll = () => {
   };
 
   // Calculate attendance for each employee
-  const getAttendanceStats = (userId: string) => {
+  const getAttendanceStats = (userId: string, allowedPaidLeaves: number) => {
     const userAttendance = attendanceData.filter(a => a.user_id === userId);
     
     // Count only 'present' status (not late, not half-day)
@@ -229,13 +229,20 @@ const Payroll = () => {
     // Total full present days = present + late (both are full working days)
     const totalPresentDays = presentDays + lateDays;
     
-    // Effective days for salary calculation (half days = 0.5)
-    const effectivePresentDays = totalPresentDays + (halfDays * 0.5);
+    // Effective days from actual work (half days = 0.5)
+    const workPresentDays = totalPresentDays + (halfDays * 0.5);
+    
+    // Calculate how many paid leaves can be applied (max is the allowed leaves or total absent days)
+    const appliedPaidLeaves = Math.min(allowedPaidLeaves, absentDays + (halfDays * 0.5));
+    
+    // Effective days for salary calculation (Work Days + Paid Leaves)
+    const effectivePresentDays = Math.min(workingDays, workPresentDays + appliedPaidLeaves);
     
     return {
       presentDays: totalPresentDays,
       absentDays,
       halfDays,
+      paidLeaves: appliedPaidLeaves,
       effectivePresentDays,
       totalRecords: userAttendance.length,
     };
@@ -244,7 +251,22 @@ const Payroll = () => {
   // Generate payroll data from profiles and attendance
   const payrollData = useMemo(() => {
     return profiles.map((profile, index) => {
-      const attendance = getAttendanceStats(profile.id);
+      // Parse bank details and joining date
+      const bankInfo = typeof profile.bank_details === 'string' 
+        ? JSON.parse(profile.bank_details) 
+        : (profile.bank_details as any);
+      
+      const doj = bankInfo?.doj || (profile as any).joiningDate;
+      const targetDate = new Date(year, monthIndex, 1);
+      
+      // Calculate Allowed Leaves (2 if tenure >= 3 months, else 1)
+      let allowedLeaves = 1;
+      if (doj) {
+        const tenureMonths = differenceInMonths(targetDate, parseISO(doj));
+        allowedLeaves = tenureMonths >= 3 ? 2 : 1;
+      }
+
+      const attendance = getAttendanceStats(profile.id, allowedLeaves);
       
       // Check if salary_details exists (new detailed salary structure)
       const salaryDetails = (profile as any).salary_details as { 
@@ -316,11 +338,6 @@ const Payroll = () => {
       const status = attendance.totalRecords === 0 ? "pending" : 
                     attendance.effectivePresentDays >= workingDays * 0.8 ? "paid" : "processing";
 
-      // Robust bank detail extraction
-      const bankInfo = typeof profile.bank_details === 'string' 
-        ? JSON.parse(profile.bank_details) 
-        : (profile.bank_details as any);
-        
       const bank_name = bankInfo?.bank_name || bankInfo?.bankName || (profile as any).bank_name || "N/A";
       const account_number = bankInfo?.account_number || bankInfo?.accountNumber || (profile as any).account_number || "N/A";
       const ifsc_code = bankInfo?.ifsc_code || bankInfo?.ifscCode || (profile as any).ifsc_code || "N/A";
@@ -361,6 +378,7 @@ const Payroll = () => {
         presentDays: attendance.presentDays,
         absentDays: attendance.absentDays,
         halfDays: attendance.halfDays,
+        paidLeaves: attendance.paidLeaves,
         effectivePresentDays: attendance.effectivePresentDays,
         leaveDays: workingDays - attendance.effectivePresentDays,
         status,

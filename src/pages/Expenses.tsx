@@ -245,19 +245,28 @@ const Expenses = () => {
 
   const fetchExpenses = async () => {
     try {
+      setLoading(true);
       let query = supabase.from("expenses").select("*");
-      if (!isAdmin && !isHR) {
-        query = query.eq("submitted_by", user?.id);
+      
+      // Fixed: Ensure useAuth values are ready before filtering
+      if (user?.id && !isAdmin && !isHR) {
+        query = query.eq("submitted_by", user.id);
       }
+      
       const { data, error } = await query.order("created_at", { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error fetching expenses:", error);
+        toast.error("Failed to load expenses data");
+        return;
+      }
+
       setExpenses(data?.map(e => ({
         ...e,
         status: e.status as "pending" | "approved" | "rejected"
       })) || []);
     } catch (error) {
-      console.error("Error fetching expenses:", error);
+      console.error("Critical error in fetchExpenses:", error);
     } finally {
       setLoading(false);
     }

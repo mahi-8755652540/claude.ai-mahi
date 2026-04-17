@@ -47,6 +47,7 @@ const weekData = [
   { day: "Fri", present: 85, absent: 15 },
   { day: "Sat", present: 45, absent: 55 },
   { day: "Sun", present: 20, absent: 80 },
+];
 const statusStyles: Record<string, string> = {
   active: "bg-teal-500",
   away: "bg-amber-500",

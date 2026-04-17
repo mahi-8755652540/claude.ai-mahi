@@ -25,6 +25,14 @@ import {
   ArrowUp,
   ArrowDown
 } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { useEmployees } from "@/context/EmployeeContext";
 
 import { useQuery } from "@tanstack/react-query";

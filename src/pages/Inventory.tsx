@@ -233,7 +233,6 @@ const Inventory = () => {
     } finally {
       setIsSaving(false);
     }
-    }
   };
 
   const handleEditItemOpen = (item: InventoryItem) => {
@@ -313,7 +312,6 @@ const Inventory = () => {
     } finally {
       setIsSaving(false);
     }
-    }
   };
 
   const handleOutwardSubmit = async () => {
@@ -348,7 +346,6 @@ const Inventory = () => {
       toast.error("Failed to record outward: " + err.message);
     } finally {
       setIsSaving(false);
-    }
     }
   };
   

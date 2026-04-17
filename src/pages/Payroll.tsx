@@ -584,12 +584,19 @@ const Payroll = () => {
                           <TableCell>{item.department}</TableCell>
                           <TableCell className="text-center">
                             <div className="flex flex-col items-center">
-                              <span className={`font-medium ${item.presentDays > 0 ? 'text-success' : 'text-muted-foreground'}`}>
-                                {item.presentDays} / {item.workingDays}
+                              <span className={`font-medium ${item.presentDays > 0 || item.paidLeaves > 0 ? 'text-success' : 'text-muted-foreground'}`}>
+                                {item.presentDays}
+                                {item.paidLeaves > 0 && (
+                                  <span className="text-primary ml-1">
+                                    + {item.paidLeaves} (P)
+                                  </span>
+                                )}
+                                <span className="mx-1">/</span>
+                                {item.workingDays}
                               </span>
-                              {item.absentDays > 0 && (
+                              {item.absentDays > item.paidLeaves && (
                                 <span className="text-xs text-destructive">
-                                  {item.absentDays} absent
+                                  {Math.round((item.absentDays - item.paidLeaves) * 10) / 10} unpaid
                                 </span>
                               )}
                             </div>

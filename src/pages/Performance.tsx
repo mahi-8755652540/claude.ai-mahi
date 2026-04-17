@@ -101,6 +101,44 @@ const Performance = () => {
     return "text-destructive";
   };
 
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [newReview, setNewReview] = useState({
+    employeeId: "",
+    rating: "4.0",
+    goals: "80",
+    cycle: "Monthly Review"
+  });
+
+  const handleAddReview = async () => {
+    if (!newReview.employeeId) {
+      toast.error("Please select an employee");
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      const { error } = await supabase.from("performance_records" as any).upsert({
+        employee_id: newReview.employeeId,
+        rating: parseFloat(newReview.rating),
+        goals_completed: parseInt(newReview.goals),
+        last_review: newReview.cycle,
+        trend: "up"
+      }, { onConflict: "employee_id" });
+
+      if (error) throw error;
+
+      toast.success("Performance review saved successfully! 🎯");
+      setDialogOpen(false);
+      refetch();
+    } catch (error) {
+      console.error("Error saving review:", error);
+      toast.error("Failed to save review. Ensure 'performance_records' table exists.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -110,18 +148,18 @@ const Performance = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-foreground">
       <Sidebar />
-      <main className="md:pl-64 min-h-screen">
+      <main className="md:pl-64 min-h-screen pb-20">
         <Header />
         <section className="p-6 animate-fade-in">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="font-display text-2xl font-semibold text-foreground">Performance Management</h1>
-              <p className="text-muted-foreground">Review employee evaluations and performance metrics</p>
+              <h1 className="font-display text-3xl font-black text-slate-900 dark:text-white tracking-tight">PERFORMANCE HUB</h1>
+              <p className="text-muted-foreground font-medium">Real-time workforce efficiency and goal tracking</p>
             </div>
             {(role === "admin" || role === "hr") && (
-              <Button onClick={() => toast.info("Performance Edit coming soon in side-panel")}>
+              <Button onClick={() => setDialogOpen(true)} className="rounded-xl font-bold shadow-lg shadow-primary/20">
                 <Plus className="w-4 h-4 mr-2" />
                 Add Review
               </Button>
@@ -129,45 +167,49 @@ const Performance = () => {
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
             {stats.map((stat, idx) => (
-              <Card key={stat.label} className="shadow-card animate-slide-up" style={{ animationDelay: `${idx * 100}ms` }}>
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-muted-foreground">{stat.label}</p>
-                      <p className="text-2xl font-semibold mt-1">
-                        {stat.value}
-                        {stat.suffix && <span className="text-sm text-muted-foreground">{stat.suffix}</span>}
-                      </p>
-                    </div>
-                    <div className={`p-3 rounded-full bg-secondary/50 ${stat.color}`}>
-                      <stat.icon className="w-5 h-5" />
+              <Card key={stat.label} className="relative overflow-hidden border-0 shadow-lg animate-slide-up" style={{ 
+                animationDelay: `${idx * 100}ms`,
+                background: "linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(248,250,252,1) 100%)"
+              }}>
+                <div className="p-5">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-xs font-black uppercase tracking-widest text-slate-400">{stat.label}</p>
+                    <div className={`p-2 rounded-xl bg-slate-50 ${stat.color}`}>
+                      <stat.icon className="w-4 h-4" />
                     </div>
                   </div>
-                </CardContent>
+                  <div className="flex items-baseline gap-1">
+                    <p className="text-3xl font-black text-slate-800">{stat.value}</p>
+                    {stat.suffix && <span className="text-xs font-bold text-slate-400">{stat.suffix}</span>}
+                  </div>
+                </div>
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-slate-100">
+                  <div className="h-full bg-current opacity-20" style={{ width: '40%', color: 'inherit' }} />
+                </div>
               </Card>
             ))}
           </div>
 
           {/* Filters */}
-          <div className="flex gap-4 mb-6">
-            <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <div className="relative flex-1">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <Input
-                placeholder="Search employees..."
-                className="pl-10 rounded-xl"
+                placeholder="Search staff performance..."
+                className="pl-12 h-12 rounded-2xl border-slate-200 bg-white shadow-sm focus:ring-primary"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
             <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
-              <SelectTrigger className="w-48 rounded-xl">
+              <SelectTrigger className="w-full sm:w-48 h-12 rounded-2xl border-slate-200 bg-white shadow-sm font-bold capitalize">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Monthly">Monthly</SelectItem>
-                <SelectItem value="Quarterly">Quarterly</SelectItem>
+              <SelectContent className="rounded-xl">
+                <SelectItem value="Monthly">Monthly Cycle</SelectItem>
+                <SelectItem value="Quarterly">Quarterly Audit</SelectItem>
                 <SelectItem value="Annual">Annual Review</SelectItem>
               </SelectContent>
             </Select>
@@ -250,6 +292,91 @@ const Performance = () => {
           </div>
         </section>
       </main>
+
+      {/* Add Review Dialog */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="max-w-md rounded-[2rem] p-8 border-0 shadow-2xl">
+          <DialogHeader className="mb-6">
+            <DialogTitle className="text-3xl font-black text-slate-800 tracking-tight flex items-center gap-3">
+              <Star className="w-8 h-8 text-warning fill-current" />
+              STAFF REVIEW
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Select Employee</Label>
+              <Select
+                value={newReview.employeeId}
+                onValueChange={(val) => setNewReview({ ...newReview, employeeId: val })}
+              >
+                <SelectTrigger className="h-12 rounded-xl border-slate-200">
+                  <SelectValue placeholder="Choose person to review" />
+                </SelectTrigger>
+                <SelectContent className="rounded-xl">
+                  {employees.map((emp) => (
+                    <SelectItem key={emp.id} value={emp.id}>{emp.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Rating (1-5)</Label>
+                <Input
+                  type="number"
+                  step="0.1"
+                  min="0"
+                  max="5"
+                  value={newReview.rating}
+                  onChange={(e) => setNewReview({ ...newReview, rating: e.target.value })}
+                  className="h-12 rounded-xl border-slate-200 font-bold"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Goals Done (%)</Label>
+                <Input
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={newReview.goals}
+                  onChange={(e) => setNewReview({ ...newReview, goals: e.target.value })}
+                  className="h-12 rounded-xl border-slate-200 font-bold"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Review Cycle</Label>
+              <Select
+                value={newReview.cycle}
+                onValueChange={(val) => setNewReview({ ...newReview, cycle: val })}
+              >
+                <SelectTrigger className="h-12 rounded-xl border-slate-200">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="rounded-xl">
+                  <SelectItem value="Monthly Review">Monthly Review</SelectItem>
+                  <SelectItem value="Quarterly Review">Quarterly Review</SelectItem>
+                  <SelectItem value="Probation Review">Probation Review</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <DialogFooter className="mt-10 gap-3 sm:gap-0">
+            <Button variant="ghost" onClick={() => setDialogOpen(false)} className="rounded-xl font-bold">Cancel</Button>
+            <Button 
+              onClick={handleAddReview} 
+              disabled={isSubmitting}
+              className="rounded-xl font-black px-8 bg-slate-900 shadow-xl shadow-slate-200"
+            >
+              {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : "PERSIST REVIEW"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

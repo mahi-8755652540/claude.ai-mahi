@@ -241,48 +241,76 @@ const LeaveManagement = () => {
     },
   });
 
-  // Sync all balances mutation (Admin/HR only)
+  // Optimized Sync all balances mutation (Admin/HR only)
   const syncBalancesMutation = useMutation({
     mutationFn: async () => {
       if (!canManageLeaves) return;
       
-      const { data: profiles, error: pError } = await supabase.from("profiles").select("id");
-      if (pError) throw pError;
-
       const currentYear = new Date().getFullYear();
       const types = ['annual', 'sick', 'casual', 'half-day'];
       
+      // 1. Fetch all profiles and existing balances in bulk
+      const [{ data: profiles }, { data: existingBalances }] = await Promise.all([
+        supabase.from("profiles").select("id"),
+        supabase.from("leave_balance").select("*").eq("year", currentYear)
+      ]);
+
+      if (!profiles) return;
+
+      const balanceMap = new Map();
+      existingBalances?.forEach(b => {
+        balanceMap.set(`${b.user_id}-${b.leave_type}`, b);
+      });
+
+      const toInsert = [];
+      const toUpdate = [];
+
       for (const p of profiles) {
         for (const type of types) {
-          const { data, error } = await supabase
-            .from("leave_balance")
-            .select("*")
-            .eq("user_id", p.id)
-            .eq("leave_type", type)
-            .eq("year", currentYear)
-            .maybeSingle();
+          const key = `${p.id}-${type}`;
+          const existing = balanceMap.get(key);
 
-          if (error) continue;
-
-          if (!data) {
-            await supabase.from("leave_balance").insert({
+          if (!existing) {
+            toInsert.push({
               user_id: p.id,
               leave_type: type,
               total_days: 10,
               used_days: 0,
               year: currentYear
             });
-          } else if (data.total_days !== 10) {
-            await supabase.from("leave_balance")
-              .update({ total_days: 10 })
-              .eq("id", data.id);
+          } else if (existing.total_days !== 10) {
+            toUpdate.push({
+              id: existing.id,
+              total_days: 10
+            });
           }
         }
       }
+
+      // 2. Perform bulk operations
+      const promises = [];
+      if (toInsert.length > 0) promises.push(supabase.from("leave_balance").insert(toInsert));
+      
+      // Supabase handles bulk update via .upsert() if IDs are provided
+      if (toUpdate.length > 0) {
+        // Prepare partial updates (keep other fields)
+        const updates = toUpdate.map(u => {
+          const orig = existingBalances?.find(eb => eb.id === u.id);
+          return { ...orig, total_days: 10 };
+        });
+        promises.push(supabase.from("leave_balance").upsert(updates));
+      }
+
+      if (promises.length > 0) {
+        const results = await Promise.all(promises);
+        results.forEach(r => { if (r.error) throw r.error; });
+      }
+      
+      return { inserted: toInsert.length, updated: toUpdate.length };
     },
-    onSuccess: () => {
+    onSuccess: (res: any) => {
       queryClient.invalidateQueries({ queryKey: ["leave-balance"] });
-      toast.success("Quota synchronized to 10 days!");
+      toast.success(`Synced! Added ${res.inserted} & Updated ${res.updated} records.`);
     },
     onError: (error: Error) => {
       toast.error("Sync failed: " + error.message);

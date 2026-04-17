@@ -212,8 +212,9 @@ const Index = () => {
           ═══════════════════════════════════════════════════════ */}
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
             {/* Total Employees — Teal */}
-            <Card className="relative overflow-hidden p-6 border-0 shadow-lg group hover:-translate-y-1 transition-all duration-300" style={{
-              background: "linear-gradient(135deg, rgba(13,148,136,0.06) 0%, rgba(20,184,166,0.03) 100%)"
+            <Card className="relative overflow-hidden p-6 border-0 shadow-lg group hover:-translate-y-1 transition-all duration-300 animate-slide-up" style={{
+              background: "linear-gradient(135deg, rgba(13,148,136,0.06) 0%, rgba(20,184,166,0.03) 100%)",
+              animationDelay: "100ms"
             }}>
               <div className="absolute -right-4 -top-4 w-24 h-24 rounded-full transition-transform group-hover:scale-125 duration-500" style={{ backgroundColor: "rgba(13,148,136,0.08)" }} />
               <div className="absolute right-4 top-12 w-10 h-10 rounded-full" style={{ backgroundColor: "rgba(13,148,136,0.04)" }} />
@@ -238,8 +239,9 @@ const Index = () => {
             </Card>
 
             {/* Present Today — Golden */}
-            <Card className="relative overflow-hidden p-6 border-0 shadow-lg group hover:-translate-y-1 transition-all duration-300" style={{
-              background: "linear-gradient(135deg, rgba(212,160,23,0.06) 0%, rgba(202,138,4,0.03) 100%)"
+            <Card className="relative overflow-hidden p-6 border-0 shadow-lg group hover:-translate-y-1 transition-all duration-300 animate-slide-up" style={{
+              background: "linear-gradient(135deg, rgba(212,160,23,0.06) 0%, rgba(202,138,4,0.03) 100%)",
+              animationDelay: "200ms"
             }}>
               <div className="absolute -right-4 -top-4 w-24 h-24 rounded-full transition-transform group-hover:scale-125 duration-500" style={{ backgroundColor: "rgba(212,160,23,0.08)" }} />
               <div className="absolute right-4 top-12 w-10 h-10 rounded-full" style={{ backgroundColor: "rgba(212,160,23,0.04)" }} />
@@ -264,8 +266,9 @@ const Index = () => {
             </Card>
 
             {/* On Leave — Teal Dark */}
-            <Card className="relative overflow-hidden p-6 border-0 shadow-lg group hover:-translate-y-1 transition-all duration-300" style={{
-              background: "linear-gradient(135deg, rgba(15,115,115,0.06) 0%, rgba(13,148,136,0.03) 100%)"
+            <Card className="relative overflow-hidden p-6 border-0 shadow-lg group hover:-translate-y-1 transition-all duration-300 animate-slide-up" style={{
+              background: "linear-gradient(135deg, rgba(15,115,115,0.06) 0%, rgba(13,148,136,0.03) 100%)",
+              animationDelay: "300ms"
             }}>
               <div className="absolute -right-4 -top-4 w-24 h-24 rounded-full transition-transform group-hover:scale-125 duration-500" style={{ backgroundColor: "rgba(15,115,115,0.08)" }} />
               <div className="absolute right-4 top-12 w-10 h-10 rounded-full" style={{ backgroundColor: "rgba(15,115,115,0.04)" }} />
@@ -289,8 +292,9 @@ const Index = () => {
             </Card>
 
             {/* Departments — Gold Dark */}
-            <Card className="relative overflow-hidden p-6 border-0 shadow-lg group hover:-translate-y-1 transition-all duration-300" style={{
-              background: "linear-gradient(135deg, rgba(184,134,11,0.06) 0%, rgba(202,138,4,0.03) 100%)"
+            <Card className="relative overflow-hidden p-6 border-0 shadow-lg group hover:-translate-y-1 transition-all duration-300 animate-slide-up" style={{
+              background: "linear-gradient(135deg, rgba(184,134,11,0.06) 0%, rgba(202,138,4,0.03) 100%)",
+              animationDelay: "400ms"
             }}>
               <div className="absolute -right-4 -top-4 w-24 h-24 rounded-full transition-transform group-hover:scale-125 duration-500" style={{ backgroundColor: "rgba(184,134,11,0.08)" }} />
               <div className="absolute right-4 top-12 w-10 h-10 rounded-full" style={{ backgroundColor: "rgba(184,134,11,0.04)" }} />

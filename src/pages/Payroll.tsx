@@ -145,11 +145,21 @@ const Payroll = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("profiles")
-        .select("id, name, email, phone, department, designation, salary, bank_details, leave_balance(used_days, leave_type, year)")
+        .select("id, name, email, phone, department, designation, salary, bank_details, salary_details, work_type")
         .order("name");
 
       if (error) throw error;
-      return data as any[];
+      
+      // Also fetch leave balances safely
+      const { data: balances } = await supabase
+        .from("leave_balance")
+        .select("*")
+        .eq("year", new Date().getFullYear());
+
+      return data.map(p => ({
+        ...p,
+        leave_balance: balances?.filter(b => b.user_id === p.id) || []
+      })) as any[];
     },
   });
 

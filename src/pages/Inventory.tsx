@@ -81,14 +81,14 @@ const Inventory = () => {
   }, []);
 
   const fetchInventory = async () => {
-    // 1. Initial Local Data (Immediate Load)
-    const localData = localStorage.getItem('local_inventory');
-    if (localData) setItems(JSON.parse(localData));
-
     try {
-      const { data, error } = await supabase.from('site_materials').select('*').order('updated_at', { ascending: false });
+      const { data, error } = await supabase
+        .from('site_materials')
+        .select('*')
+        .order('updated_at', { ascending: false });
+        
       if (error) throw error;
-      if (data && data.length > 0) {
+      if (data) {
         const cloudItems = data.map((i: any) => ({
           id: i.id,
           code: i.material_id,
@@ -101,11 +101,9 @@ const Inventory = () => {
           hsnCode: i.hsn_code || ""
         }));
         setItems(cloudItems);
-        // Sync local storage with latest cloud data
-        localStorage.setItem('local_inventory', JSON.stringify(cloudItems));
       }
     } catch (err) {
-      console.warn("Supabase load failed or empty, using existing local data", err);
+      console.error("Cloud load failed:", err);
     }
   };
 
@@ -123,7 +121,7 @@ const Inventory = () => {
           id: t.id,
           date: t.created_at,
           type: t.type as "inward" | "outward",
-          itemId: t.material_id, // material_id is the UUID of the item
+          itemId: t.material_id, 
           quantity: t.quantity,
           source: t.source_type as SourceType,
           sourceName: t.source_name,
@@ -175,7 +173,8 @@ const Inventory = () => {
   const stats = useMemo(() => {
     const totalStockValue = items.reduce((sum, item) => {
       const stock = getStock(item.id);
-      const lastRate = transactions.find(t => t.itemId === item.id && t.type === "inward" && t.rate)?.rate || 0;
+      const lastInward = transactions.find(t => t.itemId === item.id && t.type === "inward" && t.rate);
+      const lastRate = lastInward?.rate || 0;
       return sum + (stock * lastRate);
     }, 0);
 
@@ -221,7 +220,7 @@ const Inventory = () => {
 
       if (error) throw error;
 
-      toast.success("✅ Item \"" + newItem.code + "\" saved to database!");
+      toast.success("✅ Item \"" + newItem.code + "\" saved!");
       setAddItemOpen(false);
       setNewItem({ opening: 0, minStock: 10 });
       fetchInventory();
@@ -258,25 +257,10 @@ const Inventory = () => {
     }
   };
 
-  const handleClearInventory = async () => {
-    if (!window.confirm("ARE YOU SURE? This will delete ALL items from the inventory permanently!")) return;
-    
-    try {
-      const { error } = await supabase.from('site_materials').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-      if (error) throw error;
-      
-      setItems([]);
-      toast.success("🗑️ Inventory cleared successfully!");
-    } catch (error: any) {
-      console.error("Delete error:", error);
-      toast.error("Failed to clear inventory: " + error.message);
-    }
-  };
-
   const handleDeleteItem = async (id: string) => {
     const hasTransactions = transactions.some(t => t.itemId === id);
     if (hasTransactions) {
-      toast.error("Cannot delete — item has transactions. Remove transactions first.");
+      toast.error("Cannot delete — item has transactions.");
       setDeleteItemId(null);
       return;
     }
@@ -489,305 +473,94 @@ const Inventory = () => {
         <Header />
         <div className="p-6 space-y-6">
 
-          {/* Hero Banner */}
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-900 p-8 animate-fade-in">
-            <div className="relative z-10 flex items-center justify-between">
-              <div>
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20">
-                    <Warehouse className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h2 className="font-display text-2xl font-bold text-white">Warehouse & Inventory</h2>
-                    <p className="text-blue-200/80 text-sm">Shree Space Solution • SOP Enabled</p>
-                  </div>
+          {/* Hero Banner - Simplified */}
+          <div className="relative overflow-hidden rounded-2xl bg-slate-900 p-6 animate-fade-in border border-slate-800">
+            <div className="relative z-10 flex items-center justify-between flex-wrap gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center border border-blue-500/30">
+                  <Warehouse className="w-5 h-5 text-blue-400" />
                 </div>
-                <p className="text-blue-100/60 text-sm max-w-md mt-2">
-                  📐 Golden Formula: <span className="text-white font-semibold">Stock = Opening + Inward − Outward</span>
-                </p>
+                <div>
+                  <h2 className="text-xl font-bold text-white tracking-tight">Inventory Terminal</h2>
+                  <p className="text-slate-400 text-xs uppercase tracking-widest font-bold">Real-time Stock Audit</p>
+                </div>
               </div>
-              <div className="flex gap-3">
-                <Button 
-                  variant="outline" 
-                  onClick={downloadTemplate}
-                  className="bg-white/5 hover:bg-white/10 text-white border-white/10 shadow-lg"
-                >
-                  <Upload className="w-4 h-4 mr-2" /> Download Format
+              
+              <div className="flex flex-wrap gap-2">
+                <Button onClick={() => setAddItemOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white h-9 rounded-lg">
+                  <Plus className="w-4 h-4 mr-1.5" /> Add Item
                 </Button>
-                <div className="relative">
-                  <input
-                    type="file"
-                    accept=".xlsx, .xls, .csv"
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
-                    onChange={handleImportItems}
-                    title="Upload CSV/Excel item list"
-                  />
-                  <Button variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/20 shadow-lg">
-                    <FileSpreadsheet className="w-4 h-4 mr-2" /> Import List
-                  </Button>
-                </div>
-                <Button onClick={() => setAddItemOpen(true)} className="bg-blue-500/90 hover:bg-blue-500 text-white shadow-lg shadow-blue-500/20 border-0">
-                  <Plus className="w-4 h-4 mr-2" /> Add Item
+                <Button onClick={() => setInwardOpen(true)} className="bg-emerald-600 hover:bg-emerald-700 text-white h-9 rounded-lg">
+                  <ArrowDownToLine className="w-4 h-4 mr-1.5" /> Material In
                 </Button>
-                <Button onClick={() => setInwardOpen(true)} className="bg-emerald-500/90 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-500/20 border-0">
-                  <ArrowDownToLine className="w-4 h-4 mr-2" /> Material In
-                </Button>
-                <Button onClick={() => setOutwardOpen(true)} className="bg-amber-500/90 hover:bg-amber-500 text-white shadow-lg shadow-amber-500/20 border-0">
-                  <ArrowUpFromLine className="w-4 h-4 mr-2" /> Material Out
+                <Button onClick={() => setOutwardOpen(true)} className="bg-amber-600 hover:bg-amber-700 text-white h-9 rounded-lg">
+                  <ArrowUpFromLine className="w-4 h-4 mr-1.5" /> Material Out
                 </Button>
               </div>
             </div>
-            {/* Decorative elements */}
-            <div className="absolute -right-10 -bottom-10 w-48 h-48 rounded-full bg-blue-500/10" />
-            <div className="absolute right-24 -top-8 w-32 h-32 rounded-full bg-indigo-500/10" />
-            <div className="absolute left-1/2 top-0 w-px h-full bg-gradient-to-b from-transparent via-white/10 to-transparent" />
           </div>
 
           {/* Tabs */}
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-5">
-            <TabsList className="bg-card shadow-sm border p-1.5 border-border/50 rounded-xl h-auto flex-wrap">
-              <TabsTrigger value="dashboard" className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md px-5 py-2.5">
-                <BarChart3 className="w-4 h-4 mr-2" /> Dashboard
-              </TabsTrigger>
-              <TabsTrigger value="items" className="rounded-lg data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md px-5 py-2.5">
-                <Package className="w-4 h-4 mr-2" /> Item Master
-              </TabsTrigger>
-              <TabsTrigger value="stock" className="rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md px-5 py-2.5">
-                <Boxes className="w-4 h-4 mr-2" /> Live Stock
-              </TabsTrigger>
-              <TabsTrigger value="inward" className="rounded-lg data-[state=active]:bg-emerald-600 data-[state=active]:text-white data-[state=active]:shadow-md px-5 py-2.5">
-                <ArrowDownToLine className="w-4 h-4 mr-2" /> Inward
-              </TabsTrigger>
-              <TabsTrigger value="outward" className="rounded-lg data-[state=active]:bg-amber-600 data-[state=active]:text-white data-[state=active]:shadow-md px-5 py-2.5">
-                <ArrowUpFromLine className="w-4 h-4 mr-2" /> Outward
-              </TabsTrigger>
-              <TabsTrigger value="audit" className="rounded-lg data-[state=active]:bg-violet-600 data-[state=active]:text-white data-[state=active]:shadow-md px-5 py-2.5">
-                <ClipboardCheck className="w-4 h-4 mr-2" /> Audit
-              </TabsTrigger>
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+            <TabsList className="bg-muted/50 p-1 rounded-xl h-auto flex-wrap">
+              <TabsTrigger value="dashboard" className="rounded-lg px-4 py-2">Dashboard</TabsTrigger>
+              <TabsTrigger value="items" className="rounded-lg px-4 py-2 text-blue-600">Master Register</TabsTrigger>
+              <TabsTrigger value="stock" className="rounded-lg px-4 py-2">Live Stock</TabsTrigger>
+              <TabsTrigger value="audit" className="rounded-lg px-4 py-2 text-violet-600">Audit Logs</TabsTrigger>
             </TabsList>
 
             {/* ===== DASHBOARD TAB ===== */}
             <TabsContent value="dashboard" className="space-y-6">
-              {/* KPI Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
-                <Card className="relative overflow-hidden p-6 border-0 shadow-lg bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/50 dark:to-indigo-950/50">
-                  <div className="absolute top-0 right-0 w-20 h-20 bg-blue-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-                  <div className="relative">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="w-11 h-11 rounded-xl bg-blue-500/15 flex items-center justify-center">
-                        <Package className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                      </div>
-                      <Badge variant="outline" className="border-blue-200 text-blue-600 bg-blue-50 dark:bg-blue-900/30 text-xs font-semibold">{items.length} Items</Badge>
-                    </div>
-                    <p className="text-3xl font-bold text-foreground tracking-tight">{items.reduce((sum, item) => sum + getStock(item.id), 0).toLocaleString()}</p>
-                    <p className="text-sm text-muted-foreground mt-1">Total Units in Warehouse</p>
-                  </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                <Card className="p-5 border-0 shadow-sm bg-blue-50/50 dark:bg-blue-950/20">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-blue-400 mb-1">Total Items</p>
+                  <p className="text-2xl font-black text-slate-800">{items.length}</p>
                 </Card>
-
-                <Card className="relative overflow-hidden p-6 border-0 shadow-lg bg-gradient-to-br from-emerald-50 to-green-50 dark:from-emerald-950/50 dark:to-green-950/50">
-                  <div className="absolute top-0 right-0 w-20 h-20 bg-emerald-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-                  <div className="relative">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="w-11 h-11 rounded-xl bg-emerald-500/15 flex items-center justify-center">
-                        <IndianRupee className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                      </div>
-                      <TrendingUp className="w-5 h-5 text-emerald-500" />
-                    </div>
-                    <p className="text-3xl font-bold text-foreground tracking-tight">₹{stats.totalStockValue.toLocaleString()}</p>
-                    <p className="text-sm text-muted-foreground mt-1">Total Stock Value</p>
-                  </div>
+                <Card className="p-5 border-0 shadow-sm bg-emerald-50/50 dark:bg-emerald-950/20">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-emerald-400 mb-1">Stock Value</p>
+                  <p className="text-2xl font-black text-slate-800">₹{stats.totalStockValue.toLocaleString()}</p>
                 </Card>
-
-                <Card className="relative overflow-hidden p-6 border-0 shadow-lg bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/50 dark:to-orange-950/50">
-                  <div className="absolute top-0 right-0 w-20 h-20 bg-amber-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-                  <div className="relative">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="w-11 h-11 rounded-xl bg-amber-500/15 flex items-center justify-center">
-                        <Clock className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                      </div>
-                      {stats.pendingApprovals.length > 0 && (
-                        <span className="flex h-3 w-3">
-                          <span className="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-amber-400 opacity-75"></span>
-                          <span className="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-3xl font-bold text-foreground tracking-tight">{stats.pendingApprovals.length}</p>
-                    <p className="text-sm text-muted-foreground mt-1">Pending Approvals</p>
-                  </div>
+                <Card className="p-5 border-0 shadow-sm bg-amber-50/50 dark:bg-amber-950/20">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-amber-400 mb-1">Pending Sync</p>
+                  <p className="text-2xl font-black text-slate-800">{stats.pendingApprovals.length}</p>
                 </Card>
-
-                <Card className="relative overflow-hidden p-6 border-0 shadow-lg bg-gradient-to-br from-red-50 to-rose-50 dark:from-red-950/50 dark:to-rose-950/50">
-                  <div className="absolute top-0 right-0 w-20 h-20 bg-red-500/10 rounded-full -translate-y-1/2 translate-x-1/2" />
-                  <div className="relative">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="w-11 h-11 rounded-xl bg-red-500/15 flex items-center justify-center">
-                        <AlertTriangle className="w-5 h-5 text-red-500 dark:text-red-400" />
-                      </div>
-                      {stats.lowStockItems.length > 0 && <Badge variant="destructive" className="text-xs">{stats.lowStockItems.length} Alert</Badge>}
-                    </div>
-                    <p className="text-3xl font-bold text-foreground tracking-tight">{stats.lowStockItems.length}</p>
-                    <p className="text-sm text-muted-foreground mt-1">Low Stock Alerts</p>
-                  </div>
+                <Card className="p-5 border-0 shadow-sm bg-rose-50/50 dark:bg-rose-950/20">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-rose-400 mb-1">Alerts</p>
+                  <p className="text-2xl font-black text-slate-800">{stats.lowStockItems.length}</p>
                 </Card>
               </div>
 
-              {/* Main Content Grid */}
-              <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
-                {/* Left: Recent Activity */}
-                <div className="xl:col-span-8 space-y-6">
-                  {/* Recent Transactions */}
-                  <Card className="shadow-lg border-0 overflow-hidden">
-                    <div className="px-6 py-4 border-b border-border/50 flex items-center justify-between bg-muted/30">
-                      <div className="flex items-center gap-2">
-                        <Activity className="w-5 h-5 text-primary" />
-                        <h3 className="font-semibold text-lg">Recent Activity</h3>
-                      </div>
-                      <Button variant="ghost" size="sm" className="text-primary" onClick={() => setActiveTab("stock")}>
-                        View All <ChevronRight className="w-4 h-4 ml-1" />
-                      </Button>
-                    </div>
-                    <div className="divide-y divide-border/50">
-                      {transactions.slice(0, 6).map((t) => {
-                        const item = items.find(i => i.id === t.itemId);
-                        return (
-                          <div key={t.id} className="px-6 py-4 flex items-center gap-4 hover:bg-muted/20 transition-colors">
-                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
-                              t.type === "inward" 
-                                ? "bg-emerald-100 dark:bg-emerald-900/30" 
-                                : "bg-amber-100 dark:bg-amber-900/30"
-                            }`}>
-                              {t.type === "inward" 
-                                ? <ArrowDownToLine className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                                : <ArrowUpFromLine className="w-5 h-5 text-amber-600 dark:text-amber-400" />
-                              }
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-2">
-                                <span className="font-mono text-sm font-semibold text-foreground">{item?.code}</span>
-                                <span className="text-muted-foreground">•</span>
-                                <span className="text-sm text-muted-foreground truncate">{item?.name}</span>
-                              </div>
-                              <p className="text-xs text-muted-foreground mt-0.5">
-                                {t.type === "inward" 
-                                  ? `From ${t.sourceName || t.source}` 
-                                  : `To ${t.siteName}`
-                                }
-                                {" · "}{new Date(t.date).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
-                              </p>
-                            </div>
-                            <div className="text-right">
-                              <span className={`text-sm font-bold ${t.type === "inward" ? "text-emerald-600 dark:text-emerald-400" : "text-amber-600 dark:text-amber-400"}`}>
-                                {t.type === "inward" ? "+" : "-"}{t.quantity} {item?.unit}
-                              </span>
-                              {t.rate && <p className="text-xs text-muted-foreground">₹{t.rate}/unit</p>}
+              <div className="grid grid-cols-1 xl:grid-cols-1 gap-6">
+                <Card className="shadow-sm overflow-hidden">
+                  <div className="px-6 py-4 border-b flex items-center justify-between">
+                    <h3 className="font-bold text-slate-800 uppercase tracking-tight">Recent Activity Feed</h3>
+                    <Button variant="ghost" size="sm" onClick={() => setActiveTab("audit")}>View History</Button>
+                  </div>
+                  <div className="divide-y">
+                    {transactions.slice(0, 10).map((t) => {
+                      const item = items.find(i => i.id === t.itemId);
+                      return (
+                        <div key={t.id} className="px-6 py-3 flex items-center justify-between hover:bg-slate-50 transition-colors">
+                          <div className="flex items-center gap-4">
+                            <div className={`p-2 rounded-lg ${t.type === "inward" ? "bg-emerald-100 text-emerald-600" : "bg-amber-100 text-amber-600"}`}>
+                              {t.type === "inward" ? <ArrowDownToLine className="w-4 h-4" /> : <ArrowUpFromLine className="w-4 h-4" />}
                             </div>
                             <div>
-                              {t.approved 
-                                ? <ShieldCheck className="w-4 h-4 text-emerald-500" /> 
-                                : <Clock className="w-4 h-4 text-amber-500" />
-                              }
+                                <p className="text-sm font-bold text-slate-800">{item?.name || "Unknown Item"} <span className="text-slate-400 font-mono text-xs ml-2">[{item?.code}]</span></p>
+                                <p className="text-[10px] text-muted-foreground uppercase font-bold">{t.type === "inward" ? `Source: ${t.sourceName}` : `Site: ${t.siteName}`} • {new Date(t.date).toLocaleDateString()}</p>
                             </div>
                           </div>
-                        );
-                      })}
-                    </div>
-                  </Card>
-                </div>
-
-                {/* Right: Quick Info */}
-                <div className="xl:col-span-4 space-y-6">
-                  {/* Low Stock Alerts */}
-                  <Card className="shadow-lg border-0 overflow-hidden">
-                    <div className="px-5 py-4 border-b border-border/50 bg-red-50/50 dark:bg-red-950/20">
-                      <h3 className="font-semibold flex items-center gap-2 text-red-700 dark:text-red-400">
-                        <AlertTriangle className="w-4 h-4" /> Low Stock Items
-                      </h3>
-                    </div>
-                    <div className="p-4 space-y-3">
-                      {stats.lowStockItems.length === 0 ? (
-                        <div className="text-center py-6">
-                          <ShieldCheck className="w-10 h-10 text-emerald-400 mx-auto mb-2" />
-                          <p className="text-sm text-muted-foreground">All items are well-stocked!</p>
+                          <div className="text-right">
+                              <p className={`text-sm font-black ${t.type === "inward" ? "text-emerald-600" : "text-amber-600"}`}>
+                                  {t.type === "inward" ? "+" : "-"}{t.quantity} {item?.unit}
+                              </p>
+                              <p className="text-[10px] font-bold text-slate-300 uppercase">{t.enteredBy}</p>
+                          </div>
                         </div>
-                      ) : (
-                        stats.lowStockItems.map(item => {
-                          const stock = getStock(item.id);
-                          const pct = Math.round((stock / item.minStock) * 100);
-                          return (
-                            <div key={item.id} className="p-3 rounded-lg bg-red-50 dark:bg-red-950/20 border border-red-100 dark:border-red-900/30">
-                              <div className="flex items-center justify-between mb-2">
-                                <span className="font-mono text-sm font-semibold">{item.code}</span>
-                                <Badge variant="destructive" className="text-xs">
-                                  {stock} {item.unit}
-                                </Badge>
-                              </div>
-                              <div className="w-full h-2 bg-red-100 dark:bg-red-900/40 rounded-full overflow-hidden">
-                                <div className="h-full bg-red-500 rounded-full transition-all" style={{ width: `${Math.min(pct, 100)}%` }} />
-                              </div>
-                              <p className="text-xs text-muted-foreground mt-1">Min: {item.minStock} {item.unit}</p>
-                            </div>
-                          );
-                        })
-                      )}
-                    </div>
-                  </Card>
-
-                  {/* Pending Approvals */}
-                  <Card className="shadow-lg border-0 overflow-hidden">
-                    <div className="px-5 py-4 border-b border-border/50 bg-amber-50/50 dark:bg-amber-950/20">
-                      <h3 className="font-semibold flex items-center gap-2 text-amber-700 dark:text-amber-400">
-                        <Clock className="w-4 h-4" /> Pending Outward
-                      </h3>
-                    </div>
-                    <div className="divide-y divide-border/50">
-                      {stats.pendingApprovals.length === 0 ? (
-                        <div className="p-6 text-center">
-                          <ShieldCheck className="w-10 h-10 text-emerald-400 mx-auto mb-2" />
-                          <p className="text-sm text-muted-foreground">No pending approvals</p>
-                        </div>
-                      ) : (
-                        stats.pendingApprovals.map(t => {
-                          const item = items.find(i => i.id === t.itemId);
-                          return (
-                            <div key={t.id} className="p-4">
-                              <div className="flex items-center justify-between mb-1">
-                                <span className="font-mono text-sm font-semibold">{item?.code}</span>
-                                <span className="text-sm font-bold text-amber-600">-{t.quantity}</span>
-                              </div>
-                              <p className="text-xs text-muted-foreground mb-2">To: {t.siteName} • By: {t.enteredBy}</p>
-                              {(role === "admin" || role === "hr") && (
-                                <Button size="sm" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white" onClick={() => approveTransaction(t.id)}>
-                                  <ShieldCheck className="w-4 h-4 mr-1" /> Approve
-                                </Button>
-                              )}
-                            </div>
-                          );
-                        })
-                      )}
-                    </div>
-                  </Card>
-
-                  {/* SOP Rules */}
-                  <Card className="shadow-lg border-0 bg-gradient-to-br from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30 p-5">
-                    <h3 className="font-semibold flex items-center gap-2 text-violet-700 dark:text-violet-300 mb-3">
-                      <ShieldCheck className="w-4 h-4" /> SOP Compliance
-                    </h3>
-                    <div className="space-y-2">
-                      {[
-                        "Without entry, no material movement",
-                        "Same item, same code always",
-                        "No guess quantities allowed",
-                        "Outward requires approval",
-                      ].map((rule, i) => (
-                        <div key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
-                          <span className="text-violet-500 mt-0.5">✓</span>
-                          <span>{rule}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </Card>
-                </div>
+                      );
+                    })}
+                  </div>
+                </Card>
               </div>
             </TabsContent>
 

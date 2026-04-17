@@ -120,7 +120,9 @@ export const EmployeeProvider = ({ children }: { children: ReactNode }) => {
             phone: profile.phone || "",
             status: (profile.status === "active" ? "active" : profile.status === "away" ? "away" : "offline") as Employee["status"],
             avatar: profile.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2),
-            joinDate: profile.created_at ? new Date(profile.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "N/A",
+            joinDate: (bankInfo as any)?.doj 
+              ? new Date((bankInfo as any).doj).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) 
+              : (profile.created_at ? new Date(profile.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "N/A"),
             photo: profile.avatar_url || undefined,
             presentAddress: presentAddr ? {
               street: presentAddr.street || "",

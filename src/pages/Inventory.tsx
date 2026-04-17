@@ -110,10 +110,33 @@ const Inventory = () => {
   };
 
   const fetchTransactions = async () => {
-    const { data, error } = await supabase.from('material_movements').select('*').order('created_at', { ascending: false });
-    if (!error && data) {
-       // Convert to UI transaction format if needed
-       // (Keeping it simple for now)
+    try {
+      const { data, error } = await supabase
+        .from('material_movements')
+        .select('*')
+        .order('created_at', { ascending: false });
+        
+      if (error) throw error;
+      
+      if (data) {
+        const mappedTransactions: Transaction[] = data.map((t: any) => ({
+          id: t.id,
+          date: t.created_at,
+          type: t.type as "inward" | "outward",
+          itemId: t.material_id, // material_id is the UUID of the item
+          quantity: t.quantity,
+          source: t.source_type as SourceType,
+          sourceName: t.source_name,
+          rate: t.rate,
+          condition: t.condition as ItemCondition,
+          siteName: t.site_name,
+          approved: t.approved,
+          enteredBy: t.user_id || "System"
+        }));
+        setTransactions(mappedTransactions);
+      }
+    } catch (err) {
+      console.error("Error fetching transactions:", err);
     }
   };
 
@@ -178,33 +201,33 @@ const Inventory = () => {
     item.category.toLowerCase().includes(itemSearch.toLowerCase())
   );
 
-  const uniqueCategories = useMemo(() => [...new Set(items.map(i => i.category))], [items]);
-
-  const handleAddItemSubmit = () => {
+  const handleAddItemSubmit = async () => {
     if (!newItem.code || !newItem.name || !newItem.category || !newItem.unit) {
       toast.error("Please fill all item details: Code, Name, Category, and Unit");
       return;
     }
-    // Check duplicate code
-    if (items.some(i => i.code.toLowerCase() === newItem.code!.toLowerCase())) {
-      toast.error("Item code already exists! Use a unique code.");
-      return;
+    
+    try {
+      const { error } = await supabase.from('site_materials').insert({
+        material_id: newItem.code.toUpperCase(),
+        name: newItem.name,
+        category: newItem.category,
+        unit: newItem.unit,
+        quantity: Number(newItem.opening) || 0,
+        alert_quantity: Number(newItem.minStock) || 10,
+        description: newItem.description || "",
+        hsn_code: newItem.hsnCode || ""
+      });
+
+      if (error) throw error;
+
+      toast.success("✅ Item \"" + newItem.code + "\" saved to database!");
+      setAddItemOpen(false);
+      setNewItem({ opening: 0, minStock: 10 });
+      fetchInventory();
+    } catch (err: any) {
+      toast.error("Failed to save item: " + err.message);
     }
-    const item: InventoryItem = {
-      id: Math.random().toString(),
-      code: newItem.code.toUpperCase(),
-      name: newItem.name,
-      category: newItem.category,
-      unit: newItem.unit,
-      opening: Number(newItem.opening) || 0,
-      minStock: Number(newItem.minStock) || 0,
-      description: newItem.description || "",
-      hsnCode: newItem.hsnCode || "",
-    };
-    setItems([item, ...items]);
-    setAddItemOpen(false);
-    toast.success("✅ Item \"" + item.code + "\" added successfully!");
-    setNewItem({ opening: 0, minStock: 10 });
   };
 
   const handleEditItemOpen = (item: InventoryItem) => {
@@ -212,20 +235,31 @@ const Inventory = () => {
     setEditItemOpen(true);
   };
 
-  const handleEditItemSubmit = () => {
+  const handleEditItemSubmit = async () => {
     if (!editItem) return;
-    if (!editItem.code || !editItem.name || !editItem.category || !editItem.unit) {
-      toast.error("Please fill all required fields");
-      return;
+    try {
+      const { error } = await supabase.from('site_materials').update({
+        name: editItem.name,
+        category: editItem.category,
+        unit: editItem.unit,
+        quantity: editItem.opening,
+        alert_quantity: editItem.minStock,
+        description: editItem.description,
+        hsn_code: editItem.hsnCode
+      }).eq('id', editItem.id);
+
+      if (error) throw error;
+
+      toast.success("✅ Item updated successfully!");
+      setEditItemOpen(false);
+      fetchInventory();
+    } catch (err: any) {
+      toast.error("Update failed: " + err.message);
     }
-    setItems(items.map(i => i.id === editItem.id ? editItem : i));
-    setEditItemOpen(false);
-    setEditItem(null);
-    toast.success("✅ Item updated successfully!");
   };
 
   const handleClearInventory = async () => {
-    if (!window.confirm("ARE YOU SURE? This will delete ALL 2000+ items from the inventory permanently!")) return;
+    if (!window.confirm("ARE YOU SURE? This will delete ALL items from the inventory permanently!")) return;
     
     try {
       const { error } = await supabase.from('site_materials').delete().neq('id', '00000000-0000-0000-0000-000000000000');
@@ -251,39 +285,45 @@ const Inventory = () => {
     if (error) {
       toast.error("Failed to delete item");
     } else {
-      setItems(items.filter(i => i.id !== id));
       toast.success("Item deleted");
+      fetchInventory();
     }
     setDeleteItemId(null);
   };
 
-  const handleInwardSubmit = () => {
+  const handleInwardSubmit = async () => {
     if (!newInward.itemId || !newInward.quantity || !newInward.sourceName || !newInward.rate) {
       toast.error("Please fill all details: Item, Source Name, Rate, and Quantity");
       return;
     }
-    const t: Transaction = {
-      id: Math.random().toString(),
-      date: new Date().toISOString(),
-      type: "inward",
-      itemId: newInward.itemId,
-      quantity: Number(newInward.quantity),
-      source: newInward.source as SourceType,
-      sourceName: newInward.sourceName,
-      rate: Number(newInward.rate),
-      condition: newInward.condition as ItemCondition,
-      approved: true,
-      enteredBy: profile?.name || "User",
-    };
-    setTransactions([t, ...transactions]);
-    setInwardOpen(false);
-    toast.success("✅ Inward entry added successfully!");
-    setNewInward({ type: "inward", source: "Vendor", condition: "New", approved: true });
+
+    try {
+      const { error } = await supabase.from('material_movements').insert({
+        type: "inward",
+        material_id: newInward.itemId,
+        quantity: Number(newInward.quantity),
+        source_type: newInward.source,
+        source_name: newInward.sourceName,
+        rate: Number(newInward.rate),
+        condition: newInward.condition,
+        approved: true,
+        user_id: profile?.id
+      });
+
+      if (error) throw error;
+
+      toast.success("✅ Inward entry saved!");
+      setInwardOpen(false);
+      setNewInward({ type: "inward", source: "Vendor", condition: "New", approved: true });
+      fetchTransactions();
+    } catch (err: any) {
+      toast.error("Failed to record inward: " + err.message);
+    }
   };
 
-  const handleOutwardSubmit = () => {
+  const handleOutwardSubmit = async () => {
     if (!newOutward.itemId || !newOutward.quantity || !newOutward.siteName) {
-      toast.error("Please fill all rules: Item, Quantity, and Site Name");
+      toast.error("Please fill all details: Item, Quantity, and Site Name");
       return;
     }
     const currentStock = getStock(newOutward.itemId);
@@ -291,20 +331,37 @@ const Inventory = () => {
       toast.error("❌ Not enough stock available!");
       return;
     }
-    const t: Transaction = {
-      id: Math.random().toString(),
-      date: new Date().toISOString(),
-      type: "outward",
-      itemId: newOutward.itemId,
-      quantity: Number(newOutward.quantity),
-      siteName: newOutward.siteName,
-      approved: role === "admin" ? true : false,
-      enteredBy: profile?.name || "User",
-    };
-    setTransactions([t, ...transactions]);
-    setOutwardOpen(false);
-    toast.success(t.approved ? "✅ Outward entry added." : "⏳ Outward entry sent for approval!");
-    setNewOutward({ type: "outward", approved: false });
+
+    try {
+      const { error } = await supabase.from('material_movements').insert({
+        type: "outward",
+        material_id: newOutward.itemId,
+        quantity: Number(newOutward.quantity),
+        site_name: newOutward.siteName,
+        approved: (role === "admin" || role === "hr") ? true : false,
+        user_id: profile?.id
+      });
+
+      if (error) throw error;
+
+      toast.success((role === "admin" || role === "hr") ? "✅ Outward recorded." : "⏳ Sent for approval!");
+      setOutwardOpen(false);
+      setNewOutward({ type: "outward", approved: false });
+      fetchTransactions();
+    } catch (err: any) {
+      toast.error("Failed to record outward: " + err.message);
+    }
+  };
+  
+  const approveTransaction = async (id: string) => {
+    try {
+      const { error } = await supabase.from('material_movements').update({ approved: true }).eq('id', id);
+      if (error) throw error;
+      toast.success("✅ Transaction Approved");
+      fetchTransactions();
+    } catch (err: any) {
+      toast.error("Approval failed: " + err.message);
+    }
   };
   
   const handleImportItems = async (e: React.ChangeEvent<HTMLInputElement>) => {

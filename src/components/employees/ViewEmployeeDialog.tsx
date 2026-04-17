@@ -266,7 +266,9 @@ export const ViewEmployeeDialog = ({
                     <div className="p-6 rounded-3xl bg-slate-900 dark:bg-slate-800 shadow-xl text-white relative overflow-hidden group">
                        <div className="absolute top-0 right-0 w-20 h-20 bg-white/5 rounded-full -mr-10 -mt-10 blur-xl" />
                       <p className="text-[10px] uppercase tracking-widest font-black text-slate-400 mb-2">Compliance</p>
-                      <h4 className="text-4xl font-black text-teal-400">92%</h4>
+                      <h4 className="text-4xl font-black text-teal-400">
+                        {loadingAttendance ? '...' : (attendanceStats > 0 ? Math.min(100, Math.round((attendanceStats / 20) * 100)) : 0)}%
+                      </h4>
                       <p className="text-[10px] font-bold text-slate-500 mt-1 uppercase tracking-tighter">Consistency Index</p>
                     </div>
                     <div className="p-6 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm bg-slate-50/50 dark:bg-slate-900 group">
@@ -294,8 +296,14 @@ export const ViewEmployeeDialog = ({
                           <p className="text-xs font-bold text-amber-100/80 uppercase tracking-widest">Active Fiscal Cycle: {new Date().getFullYear()}</p>
                         </div>
                         <div className="text-right">
-                          {loadingLeaves ? <Loader2 className="w-6 h-6 animate-spin mx-auto" /> : <h5 className="text-6xl font-black">{leaveStats}</h5>}
-                          <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-80 mt-1">Days Consumed</p>
+                          {loadingLeaves ? (
+                            <Loader2 className="w-6 h-6 animate-spin mx-auto" />
+                          ) : (
+                            <div className="flex flex-col items-end">
+                              <h5 className="text-6xl font-black">{leaveStats}</h5>
+                              <p className="text-[10px] font-black uppercase tracking-[0.3em] opacity-80 mt-1">Days Consumed</p>
+                            </div>
+                          )}
                         </div>
                       </div>
                    </div>

@@ -47,17 +47,6 @@ const weekData = [
   { day: "Fri", present: 85, absent: 15 },
   { day: "Sat", present: 45, absent: 55 },
   { day: "Sun", present: 20, absent: 80 },
-];
-
-// Department data for pie chart — Golden & Teal palette
-const deptData = [
-  { name: "Engineering", value: 45, color: "#d4a017" },
-  { name: "Design", value: 18, color: "#0d9488" },
-  { name: "Marketing", value: 24, color: "#14b8a6" },
-  { name: "Sales", value: 32, color: "#ca8a04" },
-  { name: "HR", value: 9, color: "#2dd4bf" },
-];
-
 const statusStyles: Record<string, string> = {
   active: "bg-teal-500",
   away: "bg-amber-500",
@@ -71,7 +60,7 @@ const Index = () => {
   if (role === "contractor") return <Navigate to="/labour" replace />;
   if (role === "staff") return <Navigate to="/my-dashboard" replace />;
   if (role !== "admin" && role !== "hr") return <Navigate to="/employees" replace />; 
-  
+
   const { employees } = useEmployees();
   const totalEmployees = employees.length;
   
@@ -94,6 +83,22 @@ const Index = () => {
   const uniqueDepartments = new Set(employees.map((e) => e.department)).size;
   const attendancePct = totalEmployees > 0 ? Math.round((presentToday / totalEmployees) * 100) : 0;
   const displayedEmployees = employees.slice(0, 5);
+
+  // Dynamic Department Data for pie chart
+  const deptData = useMemo(() => {
+    const counts: Record<string, number> = {};
+    employees.forEach(e => {
+      const dept = e.department || "Other";
+      counts[dept] = (counts[dept] || 0) + 1;
+    });
+
+    const colors = ["#d4a017", "#0d9488", "#14b8a6", "#ca8a04", "#2dd4bf", "#b8860b"];
+    return Object.entries(counts).map(([name, value], idx) => ({
+      name,
+      value,
+      color: colors[idx % colors.length]
+    }));
+  }, [employees]);
 
   const totalDeptEmployees = deptData.reduce((sum, d) => sum + d.value, 0);
 

@@ -200,6 +200,8 @@ const Inventory = () => {
     item.category.toLowerCase().includes(itemSearch.toLowerCase())
   );
 
+  const uniqueCategories = useMemo(() => [...new Set(items.map(i => i.category))], [items]);
+
   const handleAddItemSubmit = async () => {
     if (!newItem.code || !newItem.name || !newItem.category || !newItem.unit) {
       toast.error("Please fill all item details: Code, Name, Category, and Unit");

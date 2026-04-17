@@ -1284,6 +1284,8 @@ const Inventory = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+        </div>
+      </main>
     </div>
   );
 };

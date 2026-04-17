@@ -434,10 +434,7 @@ const Inventory = () => {
     reader.readAsBinaryString(file);
   };
 
-  const approveTransaction = (id: string) => {
-    setTransactions(transactions.map(t => t.id === id ? { ...t, approved: true } : t));
-    toast.success("✅ Transaction Approved");
-  };
+
 
   const downloadTemplate = () => {
     const templateData = [
@@ -930,8 +927,6 @@ const Inventory = () => {
             </TabsContent>
 
           </Tabs>
-        </div>
-      </main>
 
       {/* Add Item Dialog — Enhanced Golden & Teal */}
       <Dialog open={addItemOpen} onOpenChange={setAddItemOpen}>

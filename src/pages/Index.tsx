@@ -103,12 +103,37 @@ const Index = () => {
 
   const totalDeptEmployees = deptData.reduce((sum, d) => sum + d.value, 0);
 
+  // Calculate Birthdays this month
+  const currentMonthIdx = new Date().getMonth();
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  
+  const birthdaysThisMonth = useMemo(() => {
+    return employees.filter(emp => {
+      if (!emp.dob) return false;
+      const dobDate = new Date(emp.dob);
+      return dobDate.getMonth() === currentMonthIdx;
+    });
+  }, [employees, currentMonthIdx]);
+
   const quickActions = [
     { icon: UserPlus, label: "Add Employee", desc: "Onboard", bg: "bg-teal-500/10 text-teal-600", route: "/employees" },
     { icon: CalendarPlus, label: "Schedule", desc: "Events", bg: "bg-amber-500/10 text-amber-600", route: "/calendar" },
     { icon: FileSpreadsheet, label: "Payroll", desc: "Process", bg: "bg-teal-600/10 text-teal-700", route: "/payroll" },
     { icon: ClipboardList, label: "Reviews", desc: "Team", bg: "bg-yellow-500/10 text-yellow-600", route: "/performance" },
-    { icon: Gift, label: "Birthdays", desc: "3 This Month", bg: "bg-teal-400/10 text-teal-500", action: () => toast.info("No birthdays this month") },
+    { 
+      icon: Gift, 
+      label: "Birthdays", 
+      desc: `${birthdaysThisMonth.length} in ${monthNames[currentMonthIdx]}`, 
+      bg: "bg-teal-400/10 text-teal-500", 
+      action: () => {
+        if (birthdaysThisMonth.length > 0) {
+          const names = birthdaysThisMonth.map(e => `${e.name} (${format(new Date(e.dob!), "do MMM")})`).join(", ");
+          toast.success(`🎂 Upcoming Birthdays: ${names}`, { duration: 5000 });
+        } else {
+          toast.info("No birthdays this month");
+        }
+      } 
+    },
     { icon: Award, label: "Awards", desc: "Celebrate", bg: "bg-amber-600/10 text-amber-700", route: "/recognitions" },
   ];
 

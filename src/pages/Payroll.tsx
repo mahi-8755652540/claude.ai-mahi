@@ -145,11 +145,11 @@ const Payroll = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("profiles")
-        .select("id, name, email, phone, department, designation, salary, bank_details")
+        .select("id, name, email, phone, department, designation, salary, bank_details, leave_balance(used_days, leave_type, year)")
         .order("name");
 
       if (error) throw error;
-      return data as Profile[];
+      return data as any[];
     },
   });
 
@@ -259,14 +259,31 @@ const Payroll = () => {
       const doj = bankInfo?.doj || (profile as any).joiningDate;
       const targetDate = new Date(year, monthIndex, 1);
       
-      // Calculate Allowed Leaves (2 if tenure >= 3 months, else 1)
-      let allowedLeaves = 1;
+      // Calculate Total Accrued Leaves since Joining Date (Cumulative)
+      let cumulativeAllowedBalance = 0;
       if (doj) {
-        const tenureMonths = differenceInMonths(targetDate, parseISO(doj));
-        allowedLeaves = tenureMonths >= 3 ? 2 : 1;
+        const joinDate = parseISO(doj);
+        const monthsSinceJoining = differenceInMonths(targetDate, joinDate) + 1;
+        
+        let totalPossibleTillNow = 0;
+        if (monthsSinceJoining > 0) {
+          if (monthsSinceJoining <= 3) {
+            totalPossibleTillNow = monthsSinceJoining * 1;
+          } else {
+            totalPossibleTillNow = (3 * 1) + ((monthsSinceJoining - 3) * 2);
+          }
+        }
+
+        // Get total used days from leave_balance for this user (current year)
+        const totalUsedDays = (profile as any).leave_balance
+          ?.filter((lb: any) => lb.year === year)
+          ?.reduce((sum: number, lb: any) => sum + (lb.used_days || 0), 0) || 0;
+
+        // Current available balance for THIS month's protection
+        cumulativeAllowedBalance = Math.max(0, totalPossibleTillNow - totalUsedDays);
       }
 
-      const attendance = getAttendanceStats(profile.id, allowedLeaves);
+      const attendance = getAttendanceStats(profile.id, cumulativeAllowedBalance);
       
       // Check if salary_details exists (new detailed salary structure)
       const salaryDetails = (profile as any).salary_details as { 

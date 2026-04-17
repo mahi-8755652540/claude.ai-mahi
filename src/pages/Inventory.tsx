@@ -14,7 +14,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { 
   Package, ArrowDownToLine, ArrowUpFromLine, ClipboardCheck, Plus, AlertTriangle, 
   Warehouse, TrendingUp, TrendingDown, Search, Filter, BarChart3, 
-  IndianRupee, ShieldCheck, Clock, Eye, Boxes, Activity,
+  IndianRupee, ShieldCheck, Clock, Eye, Boxes, Activity, Loader2,
   ArrowRight, ChevronRight, Pencil, Trash2, Tag, Hash, Layers, Scale, PackagePlus, Sparkles,
   Upload, FileSpreadsheet, Info
 } from "lucide-react";
@@ -150,6 +150,7 @@ const Inventory = () => {
   const [addItemOpen, setAddItemOpen] = useState(false);
   const [editItemOpen, setEditItemOpen] = useState(false);
   const [deleteItemId, setDeleteItemId] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   // Form States
   const [newInward, setNewInward] = useState<Partial<Transaction>>({ type: "inward", source: "Vendor", condition: "New", approved: true });
@@ -208,6 +209,7 @@ const Inventory = () => {
       return;
     }
     
+    setIsSaving(true);
     try {
       const { error } = await supabase.from('site_materials').insert({
         material_id: newItem.code.toUpperCase(),
@@ -228,6 +230,9 @@ const Inventory = () => {
       fetchInventory();
     } catch (err: any) {
       toast.error("Failed to save item: " + err.message);
+    } finally {
+      setIsSaving(false);
+    }
     }
   };
 
@@ -283,6 +288,7 @@ const Inventory = () => {
       return;
     }
 
+    setIsSaving(true);
     try {
       const { error } = await supabase.from('material_movements').insert({
         type: "inward",
@@ -304,6 +310,9 @@ const Inventory = () => {
       fetchTransactions();
     } catch (err: any) {
       toast.error("Failed to record inward: " + err.message);
+    } finally {
+      setIsSaving(false);
+    }
     }
   };
 
@@ -318,6 +327,7 @@ const Inventory = () => {
       return;
     }
 
+    setIsSaving(true);
     try {
       const { error } = await supabase.from('material_movements').insert({
         type: "outward",
@@ -336,6 +346,9 @@ const Inventory = () => {
       fetchTransactions();
     } catch (err: any) {
       toast.error("Failed to record outward: " + err.message);
+    } finally {
+      setIsSaving(false);
+    }
     }
   };
   
@@ -1063,10 +1076,11 @@ const Inventory = () => {
 
           <DialogFooter className="px-6 py-5 border-t border-border/50 bg-muted/30 gap-3">
             <Button variant="ghost" className="px-6 rounded-xl hover:bg-muted font-bold text-muted-foreground transition-colors" onClick={() => { setAddItemOpen(false); setNewItem({ opening: 0, minStock: 10 }); }}>Cancel</Button>
-            <Button onClick={handleAddItemSubmit} className="px-8 rounded-xl text-white font-bold shadow-xl shadow-teal-500/20 gap-2 transition-all hover:scale-105 active:scale-95" style={{
+            <Button onClick={handleAddItemSubmit} disabled={isSaving} className="px-8 rounded-xl text-white font-bold shadow-xl shadow-teal-500/20 gap-2 transition-all hover:scale-105 active:scale-95 disabled:opacity-50" style={{
               background: "linear-gradient(135deg, #0d9488, #0f766e)"
             }}>
-              <Plus className="w-4 h-4" /> Save Item
+              {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+              Save Item
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -1222,7 +1236,10 @@ const Inventory = () => {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setInwardOpen(false)}>Cancel</Button>
-            <Button onClick={handleInwardSubmit} className="bg-emerald-600 hover:bg-emerald-700 text-white">Save Entry</Button>
+            <Button onClick={handleInwardSubmit} disabled={isSaving} className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2">
+              {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+              Save Entry
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -1275,7 +1292,10 @@ const Inventory = () => {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setOutwardOpen(false)}>Cancel</Button>
-            <Button onClick={handleOutwardSubmit} className="bg-amber-600 hover:bg-amber-700 text-white">Send for Approval</Button>
+            <Button onClick={handleOutwardSubmit} disabled={isSaving} className="bg-amber-600 hover:bg-amber-700 text-white gap-2">
+              {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+              Send for Approval
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
